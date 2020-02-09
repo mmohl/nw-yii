@@ -44,9 +44,9 @@ class Menu extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'category' => 'Category',
-            'price' => 'Price',
+            'name' => 'Nama',
+            'category' => 'Kategori',
+            'price' => 'Harga',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];

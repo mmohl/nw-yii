@@ -1,12 +1,14 @@
 <?php
 
+use app\models\Category;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Menu */
 
-$this->title = 'Create Menu';
-$this->params['breadcrumbs'][] = ['label' => 'Menus', 'url' => ['index']];
+$translate_category = ucfirst(Category::getTranslateCategoryName($category));
+$this->title = "Buat $translate_category";
+$this->params['breadcrumbs'][] = ['label' => 'Menu', 'url' => ['index', 'category' => $category]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="menu-create">
@@ -15,6 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'category' => $category
     ]) ?>
 
 </div>

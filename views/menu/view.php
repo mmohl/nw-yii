@@ -1,13 +1,15 @@
 <?php
 
+use app\models\Category;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Menu */
 
+$translate_category = ucfirst(Category::getTranslateCategoryName($model->category));
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Menus', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Menu', 'url' => ['index', 'category' => $model->category]];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
@@ -16,11 +18,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
+        <?= Html::a('Ubah', ['update', 'id' => $model->id, 'category' => $model->category], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Hapus', ['delete', 'id' => $model->id, 'category' => $model->category], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => "Apakah anda yakin akan menghapus menu $translate_category \"{$model->name}\" ini?",
                 'method' => 'post',
             ],
         ]) ?>
@@ -29,12 +31,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
             'name',
-            'category',
-            'price',
-            'created_at',
-            'updated_at',
+            [
+                'label'  => 'Kategori',
+                'value'  => $translate_category
+            ],
+            'price:currency'
         ],
     ]) ?>
 

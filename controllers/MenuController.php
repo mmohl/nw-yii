@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Category;
 use Yii;
 use app\models\Menu;
 use app\models\MenuSearch;
@@ -41,6 +42,7 @@ class MenuController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'category' => $category
         ]);
     }
 
@@ -62,7 +64,7 @@ class MenuController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($category)
     {
         $model = new Menu();
 
@@ -72,6 +74,7 @@ class MenuController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'category' => $category
         ]);
     }
 
@@ -92,6 +95,7 @@ class MenuController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'category' => $model->category
         ]);
     }
 
@@ -104,9 +108,13 @@ class MenuController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
 
-        return $this->redirect(['index']);
+        $category = $model->category;
+
+        $model->delete();
+
+        return $this->redirect(['index', 'category' => $category]);
     }
 
     /**

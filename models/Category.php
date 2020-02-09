@@ -65,4 +65,20 @@ class Category extends \yii\db\ActiveRecord
             ],
         ];
     }
+
+    public static function getTranslateCategoryName($category)
+    {
+        switch ($category) {
+            case Category::CATEGORY_PACKAGE:
+                return 'paket';
+            case Category::CATEGORY_FOOD:
+                return 'makanan';
+            case Category::CATEGORY_BEVERAGE:
+                return 'minuman';
+            case Category::CATEGORY_SNACK:
+                return 'cemilan';
+            default:
+                return 'kategori salah';
+        }
+    }
 }
