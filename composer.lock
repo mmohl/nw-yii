@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9cd87f007dcd9d8cf647fb718b0384f8",
+    "content-hash": "bc2d9081db2b0a378f80bfa7dcdfd2ac",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -328,6 +328,157 @@
                 "html"
             ],
             "time": "2019-10-28T03:44:26+00:00"
+        },
+        {
+            "name": "kartik-v/yii2-dropdown-x",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kartik-v/yii2-dropdown-x.git",
+                "reference": "4689a7635e290ef1b71eb4f0962e3b77e347b6fe"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kartik-v/yii2-dropdown-x/zipball/4689a7635e290ef1b71eb4f0962e3b77e347b6fe",
+                "reference": "4689a7635e290ef1b71eb4f0962e3b77e347b6fe",
+                "shasum": ""
+            },
+            "require": {
+                "kartik-v/yii2-krajee-base": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "kartik\\dropdown\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD 3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Kartik Visweswaran",
+                    "email": "kartikv2@gmail.com",
+                    "homepage": "http://www.krajee.com/"
+                }
+            ],
+            "description": "An extended bootstrap dropdown widget for Yii 2 with submenu drilldown.",
+            "homepage": "https://github.com/kartik-v/yii2-dropdown-x",
+            "keywords": [
+                "Context",
+                "click",
+                "extension",
+                "menu",
+                "mouse",
+                "widget",
+                "yii2"
+            ],
+            "time": "2014-12-08T04:31:32+00:00"
+        },
+        {
+            "name": "kartik-v/yii2-krajee-base",
+            "version": "v2.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kartik-v/yii2-krajee-base.git",
+                "reference": "9ddb662bdf49fdb671a90853912a40418a26a0dd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kartik-v/yii2-krajee-base/zipball/9ddb662bdf49fdb671a90853912a40418a26a0dd",
+                "reference": "9ddb662bdf49fdb671a90853912a40418a26a0dd",
+                "shasum": ""
+            },
+            "suggest": {
+                "yiisoft/yii2-bootstrap": "for Krajee extensions to work with Bootstrap 3.x version",
+                "yiisoft/yii2-bootstrap4": "for Krajee extensions to work with Bootstrap 4.x version"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "kartik\\base\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Kartik Visweswaran",
+                    "email": "kartikv2@gmail.com",
+                    "homepage": "http://www.krajee.com/"
+                }
+            ],
+            "description": "Base library and foundation components for all Yii2 Krajee extensions.",
+            "homepage": "https://github.com/kartik-v/yii2-krajee-base",
+            "keywords": [
+                "base",
+                "extension",
+                "foundation",
+                "krajee",
+                "widget",
+                "yii2"
+            ],
+            "time": "2019-03-13T17:14:54+00:00"
+        },
+        {
+            "name": "kartik-v/yii2-nav-x",
+            "version": "v1.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kartik-v/yii2-nav-x.git",
+                "reference": "f94d9bba4beecda799f5e13dd2dd39af5c82bdc8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kartik-v/yii2-nav-x/zipball/f94d9bba4beecda799f5e13dd2dd39af5c82bdc8",
+                "reference": "f94d9bba4beecda799f5e13dd2dd39af5c82bdc8",
+                "shasum": ""
+            },
+            "require": {
+                "kartik-v/yii2-krajee-base": ">=1.9"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "kartik\\nav\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Kartik Visweswaran",
+                    "email": "kartikv2@gmail.com",
+                    "homepage": "http://www.krajee.com/"
+                }
+            ],
+            "description": "An extended bootstrap Nav widget for Yii 2 with submenu drilldown.",
+            "homepage": "https://github.com/kartik-v/yii2-nav-x",
+            "keywords": [
+                "Context",
+                "click",
+                "extension",
+                "menu",
+                "mouse",
+                "widget",
+                "yii2"
+            ],
+            "time": "2018-09-19T09:25:15+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -1623,6 +1774,43 @@
                 "url"
             ],
             "time": "2019-07-01T23:21:34+00:00"
+        },
+        {
+            "name": "jzonta/faker-restaurant",
+            "version": "1.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jzonta/FakerRestaurant.git",
+                "reference": "965c4158378d8d8869f2d62bb0be349907089a04"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jzonta/FakerRestaurant/zipball/965c4158378d8d8869f2d62bb0be349907089a04",
+                "reference": "965c4158378d8d8869f2d62bb0be349907089a04",
+                "shasum": ""
+            },
+            "require": {
+                "fzaninotto/faker": "~1.4",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "FakerRestaurant\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "João Zonta"
+                }
+            ],
+            "description": "Food and Beverage names generate using fzaninotto/Faker",
+            "homepage": "https://github.com/jzonta/FakerRestaurant",
+            "time": "2019-10-29T20:22:42+00:00"
         },
         {
             "name": "myclabs/deep-copy",
@@ -3878,6 +4066,81 @@
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
             "time": "2020-01-21T11:12:28+00:00"
+        },
+        {
+            "name": "tebazil/db-seeder",
+            "version": "0.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tebazil/db-seeder.git",
+                "reference": "5bbcea95df02c4a72d432dfc7c05cf84a95db48d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tebazil/db-seeder/zipball/5bbcea95df02c4a72d432dfc7c05cf84a95db48d",
+                "reference": "5bbcea95df02c4a72d432dfc7c05cf84a95db48d",
+                "shasum": ""
+            },
+            "require": {
+                "fzaninotto/faker": "^1.5"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "tebazil\\dbseeder\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Vasiliy Baukin",
+                    "email": "vasiliy.baukin@gmail.com"
+                }
+            ],
+            "description": "Simple to use PHP db seeding tool that uses faker generators",
+            "time": "2015-10-11T21:40:43+00:00"
+        },
+        {
+            "name": "tebazil/yii2-db-seeder",
+            "version": "0.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tebazil/yii2-db-seeder.git",
+                "reference": "0f89bfc8d7ee22e9ea63ea46b73b2a59f886c8f5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tebazil/yii2-db-seeder/zipball/0f89bfc8d7ee22e9ea63ea46b73b2a59f886c8f5",
+                "reference": "0f89bfc8d7ee22e9ea63ea46b73b2a59f886c8f5",
+                "shasum": ""
+            },
+            "require": {
+                "tebazil/db-seeder": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "tebazil\\yii2seeder\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Vasiliy Baukin",
+                    "email": "vasiliy.baukin@gmail.com"
+                }
+            ],
+            "description": "Yii2 adapter for PHP Database Seeder library",
+            "time": "2015-10-11T21:52:23+00:00"
         },
         {
             "name": "theseer/tokenizer",

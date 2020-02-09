@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link http://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -7,6 +8,9 @@
 
 namespace app\commands;
 
+use app\models\Category;
+use app\models\Menu;
+use Faker\Factory;
 use yii\console\Controller;
 use yii\console\ExitCode;
 
@@ -29,6 +33,63 @@ class HelloController extends Controller
     {
         echo $message . "\n";
 
+        return ExitCode::OK;
+    }
+
+    public function actionInitSeeder()
+    {
+        $categories = [
+            Category::CATEGORY_SNACK,
+            Category::CATEGORY_FOOD,
+            Category::CATEGORY_PACKAGE,
+            Category::CATEGORY_BEVERAGE
+        ];
+
+        foreach ($categories as $category) {
+            $menu = new Category();
+            $menu->name = $category;
+            $menu->save();
+        }
+
+        echo 'init seeder success';
+
+        return ExitCode::OK;
+    }
+
+    public function actionMenuSeeder($category, $quantity)
+    {
+        $quantity = intval($quantity);
+
+        $faker = Factory::create();
+        $faker->addProvider(new \FakerRestaurant\Provider\en_US\Restaurant($faker));
+
+        for ($i = 0; $i < $quantity; $i++) {
+            $data = [];
+
+            switch ($category) {
+                case Category::CATEGORY_BEVERAGE:
+                    $data['name'] = $faker->beverageName();
+                    break;
+                case Category::CATEGORY_FOOD:
+                    $data['name'] = $faker->foodName();
+                    break;
+                case Category::CATEGORY_SNACK:
+                    $data['name'] = $faker->dairyName();
+                    break;
+            }
+
+            $data = array_merge($data, [
+                'category' => $category,
+                'price' => $faker->numberBetween(15000, 25000)
+            ]);
+
+            $menu = new Menu;
+
+            $menu->attributes = $data;
+            $menu->save();
+        }
+
+        echo "success generate menu for category: $category with qty: $quantity";
         return ExitCode::OK;
     }
 }
