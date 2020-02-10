@@ -1,0 +1,22 @@
+{
+  "name": "nandjung-wangi-yii",
+  "authors": [
+    "Maulana Mohammad Luthfy <maulana.mohammad.luthfy@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "web/libraries",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "datatables": "^1.10.19"
+  }
+}
