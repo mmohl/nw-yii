@@ -1,0 +1,11 @@
+body {
+    background-color: lightgoldenrodyellow;
+}
+
+.menu-item:hover {
+    cursor: pointer;
+}
+
+.btn-group-justified > .btn-group .btn {
+    width: auto !important;
+}
