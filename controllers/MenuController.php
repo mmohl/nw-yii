@@ -132,4 +132,25 @@ class MenuController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    public function actionMenuItems()
+    {
+        $page = Yii::$app->request->getQueryParam('page');
+        $perPage = Yii::$app->request->getQueryParam('perPage');
+        $category = Yii::$app->request->getQueryParam('category');
+        // (page - 1) * perPage
+        $offset = ($page - 1) * $perPage;
+
+        $items = Menu::find()->where(['category' => $category])->offset($offset)->limit($perPage)->all();
+        $total = Menu::find()->where(['category' => $category])->count();
+
+        return $this->asJson(
+            [
+                'page' => $page,
+                'perPage' => $perPage,
+                'total' => $total,
+                'data' => $items
+            ]
+        );
+    }
 }
