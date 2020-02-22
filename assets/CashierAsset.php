@@ -30,6 +30,7 @@ class CashierAsset extends AssetBundle
         'scripts/cashier.js'
     ];
     public $depends = [
-        'yii\web\JqueryAsset'
+        'yii\web\JqueryAsset',
+        // 'yii\web\YiiAsset'
     ];
 }

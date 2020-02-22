@@ -24,7 +24,7 @@ CashierAsset::register($this);
                             <th>&nbsp;</th>
                         </tr>
                     </thead>
-                    <tbody id="itemData">
+                    <tbody>
                     </tbody>
                 </table>
             </div>
