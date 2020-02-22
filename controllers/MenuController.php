@@ -153,4 +153,17 @@ class MenuController extends Controller
             ]
         );
     }
+
+    public function actionMenuItem()
+    {
+        $id = Yii::$app->request->getQueryParam('id');
+
+        $item = Menu::findOne(['id' => $id]);
+
+        return $this->asJson(
+            [
+                'data' => $item
+            ]
+        );
+    }
 }
