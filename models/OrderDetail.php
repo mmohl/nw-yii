@@ -15,7 +15,7 @@ use Yii;
  * @property string|null $created_at
  * @property string|null $updated_at
  */
-class OrderDetail extends \yii\db\ActiveRecord
+class OrderDetail extends RootModel
 {
     /**
      * {@inheritdoc}
@@ -31,7 +31,7 @@ class OrderDetail extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'order_id', 'name', 'qty', 'price'], 'required'],
+            [['order_id', 'name', 'qty', 'price'], 'required'],
             [['id', 'order_id', 'qty', 'price'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['name'], 'string', 'max' => 255],
@@ -52,5 +52,10 @@ class OrderDetail extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+    public function order()
+    {
+        return $this->hasOne(Order::class, ['id' => 'order_id']);
     }
 }

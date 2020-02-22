@@ -13,7 +13,7 @@ use Yii;
  * @property string|null $created_at
  * @property string|null $updated_at
  */
-class Order extends \yii\db\ActiveRecord
+class Order extends RootModel
 {
     /**
      * {@inheritdoc}
@@ -29,9 +29,9 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'date', 'ordered_by'], 'required'],
+            [['date', 'ordered_by'], 'required'],
             [['id'], 'integer'],
-            [['date', 'created_at', 'updated_at'], 'safe'],
+            [['date', 'created_at', 'updated_at', 'order_code'], 'safe'],
             [['ordered_by'], 'string', 'max' => 255],
         ];
     }
@@ -48,5 +48,15 @@ class Order extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+    public function getItems()
+    {
+        return $this->hasMany(OrderDetail::class, ['order_id' => 'id']);
+    }
+
+    public static function makeOrderCode()
+    {
+        return date('ymd') . "-" . str_pad((Order::find()->where(['date' => date('Y-m-d')])->count() + 1), 3, '0', STR_PAD_LEFT);
     }
 }
