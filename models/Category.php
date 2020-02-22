@@ -14,7 +14,7 @@ use yii\db\Expression;
  * @property string|null $created_at
  * @property string|null $updated_at
  */
-class Category extends \yii\db\ActiveRecord
+class Category extends RootModel
 {
     const CATEGORY_PACKAGE = 'package';
     const CATEGORY_BEVERAGE = 'beverage';

@@ -14,7 +14,7 @@ use Yii;
  * @property string|null $created_at
  * @property string|null $updated_at
  */
-class Menu extends \yii\db\ActiveRecord
+class Menu extends RootModel
 {
     /**
      * {@inheritdoc}
