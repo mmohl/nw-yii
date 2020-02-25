@@ -15,12 +15,13 @@ CashierAsset::register($this);
     <div class="col-md-7">
         <div class="panel panel-default">
             <div class="panel-body">
-                <table id="table-customer-list" class="table">
+                <table id="table-customer-list" class="table table-striped table-hover">
                     <thead>
                         <tr>
                             <th>Kode Pesanan</th>
                             <th>Pemesan</th>
                             <th>Total</th>
+                            <th>Status</th>
                             <th>&nbsp;</th>
                         </tr>
                     </thead>

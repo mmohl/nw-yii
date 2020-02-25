@@ -19,6 +19,11 @@ function init() {
                 render: (data, i, row) => `0`
             },
             {
+                data: 'is_paid',
+                searchable: false,
+                render: (data, i, row) => `<label class="label label-${data == 1 ? 'success' : 'warning'}">${data == 1 ? 'Lunas' : 'Belum Bayar'}</label>`
+            },
+            {
                 sortable: false,
                 searchable: false,
                 render: (data, i, row) => ``
