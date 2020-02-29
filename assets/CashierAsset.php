@@ -27,7 +27,8 @@ class CashierAsset extends AssetBundle
     public $js = [
         'libraries/datatables/media/js/jquery.dataTables.min.js',
         'libraries/datatables/media/js/dataTables.bootstrap.min.js',
-        'scripts/cashier.js'
+        'libraries/lodash/dist/lodash.min.js',
+        'scripts/cashier.js',
     ];
     public $depends = [
         'yii\web\JqueryAsset',
