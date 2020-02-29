@@ -22,7 +22,6 @@ CashierAsset::register($this);
                             <th>Pemesan</th>
                             <th>Total</th>
                             <th>Status</th>
-                            <th>&nbsp;</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -37,25 +36,15 @@ CashierAsset::register($this);
         <div class="panel panel-default">
             <div class="panel-wrapper collapse in" aria-expanded="true">
                 <div class="panel-body">
-                    <table class="table no-border">
+                    <table class="table no-border" id="invoice-detail">
                         <thead>
                             <tr>
                                 <th>Nama</th>
                                 <th>Qty</th>
-                                <th>Total</th>
+                                <th>Harga</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Nasi Ayam</td>
-                                <td>1</td>
-                                <td>10000</td>
-                            </tr>
-                            <tr>
-                                <td>Es Jeruk</td>
-                                <td>1</td>
-                                <td>15000</td>
-                            </tr>
                         </tbody>
                         <tfoot>
                             <tr>
@@ -65,6 +54,14 @@ CashierAsset::register($this);
                             <tr>
                                 <td colspan="2">Pajak</td>
                                 <td><input type="text" readonly class="form-control inputs" id="input-tax"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Sebelum Rounding</td>
+                                <td><input type="text" readonly class="form-control inputs" id="input-before-rounding"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Nilai Rounding</td>
+                                <td><input type="text" readonly class="form-control inputs" id="input-rounding"></td>
                             </tr>
                             <tr>
                                 <td colspan="2">Total</td>
@@ -77,6 +74,9 @@ CashierAsset::register($this);
                             <tr>
                                 <td colspan="2">Total Kembali</td>
                                 <td><input type="text" readonly class="form-control inputs" id="input-changes"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3"><button disabled class="btn btn-primary btn-sm" type="button" id="btn-invoice-pay">Bayar</button></td>
                             </tr>
                         </tfoot>
                     </table>
