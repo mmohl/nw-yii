@@ -15,6 +15,18 @@ use Yii;
  */
 class Order extends RootModel
 {
+    private $total;
+
+    public function setTotal($val)
+    {
+        $this->total = $val;
+    }
+
+    public function getTotal($val)
+    {
+        return $this->total;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -31,7 +43,7 @@ class Order extends RootModel
         return [
             [['date', 'ordered_by'], 'required'],
             [['id'], 'integer'],
-            [['date', 'created_at', 'updated_at', 'order_code'], 'safe'],
+            [['date', 'created_at', 'updated_at', 'order_code', 'total'], 'safe'],
             [['ordered_by'], 'string', 'max' => 255],
         ];
     }
@@ -47,6 +59,7 @@ class Order extends RootModel
             'ordered_by' => 'Ordered By',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'total' => 'Total'
         ];
     }
 
@@ -58,5 +71,16 @@ class Order extends RootModel
     public static function makeOrderCode()
     {
         return date('ymd') . "-" . str_pad((Order::find()->where(['date' => date('Y-m-d')])->count() + 1), 3, '0', STR_PAD_LEFT);
+    }
+
+    public static function pembulatan($nominal)
+    {
+        $ratusan = substr($nominal, -3);
+        if ($ratusan < 500)
+            $akhir = $nominal - $ratusan;
+        else
+            $akhir = $nominal + (1000 - $ratusan);
+
+        return $akhir;
     }
 }
