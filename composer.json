@@ -27,7 +27,8 @@
         "kartik-v/yii2-dropdown-x": "^1.2",
         "kartik-v/yii2-money": "^1.2",
         "thamtech/yii2-uuid": "^1.2",
-        "mike42/escpos-php": "^3.0"
+        "mike42/escpos-php": "^3.0",
+        "tightenco/collect": "^6.17"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
