@@ -202,6 +202,7 @@ class CashierController extends \yii\web\Controller
         $printer->text("Terima Kasih\n");
         $printer->text("Atas Kunjungan Anda\n");
         $printer->feed(2);
+        $printer->pulse();
 
         $printer->close();
 
