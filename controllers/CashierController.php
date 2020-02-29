@@ -6,8 +6,13 @@ use app\models\Category;
 use app\models\Menu;
 use app\models\Order;
 use app\models\OrderDetail;
+use Mike42\Escpos\EscposImage;
+use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use Mike42\Escpos\Printer;
+use Tightenco\Collect\Support\Collection;
 use Yii;
 use yii\helpers\Json;
+use yii\helpers\VarDumper;
 
 class CashierController extends \yii\web\Controller
 {
@@ -74,10 +79,11 @@ class CashierController extends \yii\web\Controller
         $offset = ($page - 1) * $limit;
         $totalData = Order::find()->where(['date' => date('Y-m-d')])->count();
 
-        $query = Order::find()->with('items')
+        $query = Order::find()->joinWith(['items'])
             ->where(['date' => date('Y-m-d')])
             // ->orderBy($order_field, $order_ascdesc)
             ->limit($limit)
+            ->asArray()
             ->offset($offset);
 
         $data = $query->all();
@@ -97,6 +103,108 @@ class CashierController extends \yii\web\Controller
         return $this->render('_cashier');
     }
 
-    public function actionGetOrders()
-    { }
+    public function actionGetOrder($orderCode)
+    {
+        $order = Order::find()->joinWith(['items'])->where(['order_code' => $orderCode])->asArray()->one();
+        $items = Collection::wrap($order['items']);
+        $tax = 10;
+
+        $subtotal = $items->reduce(function ($prev, $item) {
+            return $prev + ($item['qty'] * $item['price']);
+        }, 0);
+        $taxTotal = ceil(($subtotal * $tax) / 100);
+        $total = $subtotal + $taxTotal;
+        $rounded = Order::pembulatan($total) - $total;
+
+        $order['subtotal'] = $subtotal;
+        $order['taxTotal'] = $taxTotal;
+        $order['rounded'] = $rounded;
+        $order['total'] = $total;
+
+        return $this->asJson($order);
+    }
+
+    public function actionPayOrder($orderCode)
+    {
+        $order = Order::find()->where(['order_code' => $orderCode])->one();
+
+        $order->is_paid = 1;
+        $order->save(false);
+
+        return $this->actionPrint($orderCode);
+    }
+
+    public function actionPrint($orderCode)
+    {
+        $order = Order::find()->with(['items'])->where(['order_code' => $orderCode])->one();
+        $items = Collection::wrap($order->items);
+
+        $connector = '';
+        $os = PHP_OS;
+
+        if ($os == 'Linux') {
+            $connector = "/dev/usb/lp1";
+        } else if ($os == 'Windows') {
+            $connector = '';
+        }
+
+        // $logo = EscposImage::load('logo.svg');
+
+        $connector = new FilePrintConnector($connector);
+        $printer = new Printer($connector);
+        /* Name of shop */
+        $printer->setJustification(Printer::JUSTIFY_CENTER);
+        $printer->selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+        $printer->text(strtoupper('Nandjung Wangi') . "\n");
+        $printer->selectPrintMode();
+        $printer->text(ucwords('Jl cisondari no 11') . "\n");
+        $printer->text(ucwords('pasir jambu ciwidey') . "\n");
+
+
+        /* Title of receipt */
+        $printer->setEmphasis(true);
+        $printer->text("\n");
+        $printer->setEmphasis(false);
+
+        /* Items */
+        foreach ($order->items as $item) {
+            $price = number_format($item->price, 0, ',', '.');
+            $name = strtoupper($item->name);
+            $printer->text("{$item->qty}    {$name}" . str_pad($price, 32 - strlen("{$item->qty}    {$name}"), ' ', STR_PAD_LEFT));
+        }
+
+        $printer->text("================================\n");
+
+        /* Result */
+        $printer->setEmphasis(true);
+        $printer->setEmphasis(false);
+
+        $tax = 10;
+        $subtotal = $items->reduce(function ($prev, $item) {
+            return $prev + ($item->qty * $item->price);
+        }, 0);
+        $taxTotal = ceil(($subtotal * $tax) / 100);
+        $total = $subtotal + $taxTotal;
+        $rounded = Order::pembulatan($total) - $total;
+        $totalItems = $items->reduce(function ($prev, $item) {
+            return $prev += $item->qty;
+        }, 0);
+        $printer->text("Items: $totalItems" . str_pad(number_format($subtotal, 0, ',', '.'), 32 - strlen("Items: $totalItems"), ' ', STR_PAD_LEFT) . "\n");
+        $printer->text('Tax 10%' . str_pad(number_format($taxTotal, 0, ',', '.'), 32 - strlen('Tax 10%'), ' ', STR_PAD_LEFT) . "\n");
+        $printer->text('Before Rounding' . str_pad(number_format($total, 0, ',', '.'), 32 - strlen('Before Rounding'), ' ', STR_PAD_LEFT) . "\n");
+        $printer->text('Rounding' . str_pad($rounded > 0 ? "+" . number_format($rounded, 0, ',', '.') : number_format($rounded, 0, ',', '.'), 32 - strlen('Rounding'), ' ', STR_PAD_LEFT) . "\n");
+        $printer->text('Total' . str_pad(number_format($total + $rounded, 0, ',', '.'), 32 - strlen('Total'), ' ', STR_PAD_LEFT) . "\n");
+
+        /* Footer */
+        $printer->text("================================\n");
+        $printer->feed();
+        $printer->setJustification(Printer::JUSTIFY_CENTER);
+        $printer->text("Terima Kasih\n");
+        $printer->text("Atas Kunjungan Anda\n");
+        $printer->feed(2);
+
+        $printer->close();
+
+        return $this->asJson(['print' => 1]);
+    }
 }
