@@ -54,17 +54,17 @@ class Category extends RootModel
         ];
     }
 
-    public function behaviors()
-    {
-        return [
-            [
-                'class' => TimestampBehavior::className(),
-                'createdAtAttribute' => 'created_at',
-                'updatedAtAttribute' => 'updated_at',
-                'value' => new Expression('NOW()'),
-            ],
-        ];
-    }
+    // public function behaviors()
+    // {
+    //     return [
+    //         [
+    //             'class' => TimestampBehavior::className(),
+    //             'createdAtAttribute' => 'created_at',
+    //             'updatedAtAttribute' => 'updated_at',
+    //             'value' => new Expression('NOW()'),
+    //         ],
+    //     ];
+    // }
 
     public static function getTranslateCategoryName($category)
     {
