@@ -38,3 +38,4 @@ node_modules
 #web libraries
 web/libraries/*
 web/images/*
+!web/images/app
