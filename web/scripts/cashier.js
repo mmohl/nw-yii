@@ -11,7 +11,7 @@ $(document).on('click', '#table-customer-list tbody tr', ({ target }) => {
     const [tdCode, , , tdStatus] = tr.children()
     const orderCode = $(tdCode).html()
     const status = $(tdStatus).children('label').html()
-    const r = `cashier/get-order`
+    const r = `transaction/get-order`
     currentOrderCode = orderCode
 
     $.ajax({
@@ -38,7 +38,11 @@ $(document).on('click', '#table-customer-list tbody tr', ({ target }) => {
 
         if (status.toLowerCase() == 'lunas') {
             $('#input-payment').prop('disabled', true)
+            $('#input-payment').val(parseInt(res.total_payment).toLocaleString('id'))
+            $('#input-changes').val((res.total_payment - (res.total + res.rounded)).toLocaleString('id'))
         } else {
+            $('#input-changes').val('')
+            $('#input-payment').val('')
             $('#input-payment').prop('disabled', false)
         }
     })
@@ -60,13 +64,14 @@ $('#input-payment').on("keyup", _.debounce(({ target: { value } }) => {
 }, 500))
 
 $('#btn-invoice-pay').on('click', () => {
-    const r = 'cashier/pay-order'
+    const r = 'transaction/pay-order'
     const orderCode = currentOrderCode
     const payment = $('#input-payment').val() ? $('#input-payment').val().replace(/\./ig, '') : null
+    const rounding = $('#input-rounding').val()
 
     $.ajax({
         url: '/',
-        data: { r, orderCode, payment }
+        data: { r, orderCode, payment, rounding }
     }).then(res => {
         dt.ajax.reload()
         resetViewInvoice()
@@ -93,7 +98,7 @@ function init() {
     dt = $('#table-customer-list').DataTable({
         serverSide: true,
         ajax: {
-            url: '/index.php?r=cashier/cashier-datatable'
+            url: '/index.php?r=transaction/cashier-datatable'
         },
         initComplete: function () {
             intervalDt = setInterval('dt.ajax.reload()', 10000);

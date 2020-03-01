@@ -53,7 +53,7 @@ $(document).ready(() => {
         })
 
         $.ajax({
-            url: '/index.php?r=cashier/make-order',
+            url: '/index.php?r=transaction/make-order',
             contentType: "application/json; charset=utf-8",
             data,
             dataType: 'JSON',
