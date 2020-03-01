@@ -16,6 +16,8 @@ use Yii;
  */
 class Menu extends RootModel
 {
+    public $imageFile;
+
     /**
      * {@inheritdoc}
      */
@@ -33,7 +35,8 @@ class Menu extends RootModel
             [['name', 'category', 'price'], 'required'],
             [['price'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
-            [['name', 'category'], 'string', 'max' => 255],
+            [['name', 'category', 'img'], 'string', 'max' => 255],
+            [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg']
         ];
     }
 
@@ -47,8 +50,24 @@ class Menu extends RootModel
             'name' => 'Nama',
             'category' => 'Kategori',
             'price' => 'Harga',
+            'img' => 'Gambar',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
         ];
+    }
+
+    public function upload()
+    {
+        if ($this->validate()) {
+            $path = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'web' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . $this->category;
+            if (!file_exists($path)) {
+                mkdir($path);
+            }
+
+            $this->imageFile->saveAs("@webroot/images/{$this->category}/" . $this->imageFile->baseName . '.' . $this->imageFile->extension);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

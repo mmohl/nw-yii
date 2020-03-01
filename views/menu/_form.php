@@ -12,7 +12,7 @@ use kartik\money\MaskMoney;
 
 <div class="menu-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true, 'placeholder' => 'Masukan nama', 'value' => $model->isNewRecord ?  '' : $model->name]) ?>
 
@@ -28,8 +28,11 @@ use kartik\money\MaskMoney;
         'value' => $model->isNewRecord ?  0 : $model->price,
         'pluginOptions' => [
             'prefix' => 'Rp ',
+            'precision' => 0
         ],
     ]) ?>
+
+    <?= $form->field($model, 'imageFile')->fileInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

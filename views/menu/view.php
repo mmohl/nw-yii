@@ -28,6 +28,8 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
+    <?= Html::img("@web/images/{$model->category}/{$model->img}", ['class' => 'img-responsive img-thumbnail', 'style' => 'width: 50%; margin-bottom: 1em;']) ?>
+
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [

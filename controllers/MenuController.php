@@ -9,6 +9,7 @@ use app\models\MenuSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * MenuController implements the CRUD actions for Menu model.
@@ -68,7 +69,16 @@ class MenuController extends Controller
     {
         $model = new Menu();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            if ($model->imageFile) {
+                $model->img = "{$model->imageFile->baseName}.{$model->imageFile->extension}";
+                $model->upload();
+                $model->imageFile = null;
+            };
+
+            $model->save();
+
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -89,7 +99,15 @@ class MenuController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            if ($model->imageFile) {
+                $model->img = "{$model->imageFile->baseName}.{$model->imageFile->extension}";
+                $model->upload();
+                $model->imageFile = null;
+            };
+
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
