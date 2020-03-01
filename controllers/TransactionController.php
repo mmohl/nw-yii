@@ -14,14 +14,14 @@ use Yii;
 use yii\helpers\Json;
 use yii\helpers\VarDumper;
 
-class CashierController extends \yii\web\Controller
+class TransactionController extends \yii\web\Controller
 {
     public function actionIndex()
     {
         return $this->render('index');
     }
 
-    public function actionOrderIndex()
+    public function actionOrder()
     {
         $this->layout = 'order';
 
@@ -124,12 +124,14 @@ class CashierController extends \yii\web\Controller
         return $this->asJson($order);
     }
 
-    public function actionPayOrder($orderCode, $payment)
+    public function actionPayOrder($orderCode, $payment, $rounding)
     {
         $order = Order::find()->where(['order_code' => $orderCode])->one();
 
         $order->is_paid = 1;
         $order->total_payment = $payment;
+        $order->rounding = $rounding;
+
         $order->save(false);
 
         return $this->actionPrint($orderCode);
