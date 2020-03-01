@@ -12,6 +12,8 @@ use Yii;
  * @property string $ordered_by
  * @property string|null $created_at
  * @property string|null $updated_at
+ * @property int $is_paid
+ * @property int $total_payment
  */
 class Order extends RootModel
 {
@@ -42,7 +44,7 @@ class Order extends RootModel
     {
         return [
             [['date', 'ordered_by'], 'required'],
-            [['id'], 'integer'],
+            [['id', 'total_payment', 'is_paid'], 'integer'],
             [['date', 'created_at', 'updated_at', 'order_code', 'total'], 'safe'],
             [['ordered_by'], 'string', 'max' => 255],
         ];
@@ -56,6 +58,8 @@ class Order extends RootModel
         return [
             'id' => 'ID',
             'date' => 'Date',
+            'total_payment' => 'Total Bayar',
+            'is_paid' => 'Dibayar',
             'ordered_by' => 'Ordered By',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
