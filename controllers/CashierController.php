@@ -124,11 +124,12 @@ class CashierController extends \yii\web\Controller
         return $this->asJson($order);
     }
 
-    public function actionPayOrder($orderCode)
+    public function actionPayOrder($orderCode, $payment)
     {
         $order = Order::find()->where(['order_code' => $orderCode])->one();
 
         $order->is_paid = 1;
+        $order->total_payment = $payment;
         $order->save(false);
 
         return $this->actionPrint($orderCode);
@@ -148,23 +149,31 @@ class CashierController extends \yii\web\Controller
             $connector = '';
         }
 
-        // $logo = EscposImage::load('logo.svg');
+        $webroot = Yii::getAlias('@webroot');
+        $logo = EscposImage::load("$webroot/images/app/logo_resize.png", false);
 
         $connector = new FilePrintConnector($connector);
         $printer = new Printer($connector);
+        // print logo
+        $printer->setJustification(Printer::JUSTIFY_CENTER);
+        $printer->bitImage($logo);
+
         /* Name of shop */
         $printer->setJustification(Printer::JUSTIFY_CENTER);
-        $printer->selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
-        $printer->text(strtoupper('Nandjung Wangi') . "\n");
-        $printer->selectPrintMode();
-        $printer->text(ucwords('Jl cisondari no 11') . "\n");
-        $printer->text(ucwords('pasir jambu ciwidey') . "\n");
-
+        // $printer->selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+        // $printer->text(strtoupper('Nandjung Wangi') . "\n");
+        // $printer->text(ucwords('Jl cisondari no 11') . "\n");
+        // $printer->text(ucwords('pasir jambu ciwidey') . "\n");
 
         /* Title of receipt */
-        $printer->setEmphasis(true);
         $printer->text("\n");
         $printer->setEmphasis(false);
+
+        // order detail
+        $printer->selectPrintMode();
+        $printer->text("Pemesan" . str_pad($order->ordered_by, 32 - strlen('Pemesan'), ' ', STR_PAD_LEFT) . "\n");
+        $printer->text("Kode Pesanan" . str_pad($order->order_code, 32 - strlen('Kode Pesanan'), ' ', STR_PAD_LEFT) . "\n");
+        $printer->feed();
 
         /* Items */
         foreach ($order->items as $item) {

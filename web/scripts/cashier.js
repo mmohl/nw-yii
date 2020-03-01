@@ -1,5 +1,6 @@
 var dt = null
 var currentOrderCode = null
+var intervalDt = null
 
 $(document).ready(() => {
     init()
@@ -44,8 +45,8 @@ $(document).on('click', '#table-customer-list tbody tr', ({ target }) => {
 })
 
 $('#input-payment').on("keyup", _.debounce(({ target: { value } }) => {
-    const inputPay = parseInt(value.replace('.', ''))
-    const totalShouldPay = parseInt($('#input-total').val().replace('.', ''))
+    const inputPay = parseInt(value.replace(/\./ig, ''))
+    const totalShouldPay = parseInt($('#input-total').val().replace(/\./ig, ''))
 
     if (inputPay >= totalShouldPay) {
         $('#btn-invoice-pay').prop('disabled', false)
@@ -61,13 +62,16 @@ $('#input-payment').on("keyup", _.debounce(({ target: { value } }) => {
 $('#btn-invoice-pay').on('click', () => {
     const r = 'cashier/pay-order'
     const orderCode = currentOrderCode
+    const payment = $('#input-payment').val() ? $('#input-payment').val().replace(/\./ig, '') : null
 
     $.ajax({
         url: '/',
-        data: { r, orderCode }
+        data: { r, orderCode, payment }
     }).then(res => {
         dt.ajax.reload()
         resetViewInvoice()
+    }).fail(err => {
+        window.alert('gagal melakukan pembayaran, silahkan coba lagi')
     })
 })
 
@@ -90,6 +94,10 @@ function init() {
         serverSide: true,
         ajax: {
             url: '/index.php?r=cashier/cashier-datatable'
+        },
+        initComplete: function () {
+            intervalDt = setInterval('dt.ajax.reload()', 10000);
+            // window.onbeforeunload = clearInterval(intervalDt)
         },
         columns: [
             { data: 'order_code' },
