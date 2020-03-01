@@ -243,19 +243,30 @@ function getItems(category, page, perPage) {
             $(div).empty()
         })
 
-        data.forEach(item => {
+        if (data.length > 0) {
+            data.forEach(item => {
+                let panel = `
+                <div class="col-md-3 menu-item" data-menu-id="${item.id}">
+                    <div class="thumbnail">
+                        <img src="/images/${category}/${item.img}" alt="${item.name}">
+                    <div class="caption">
+                        <h4>${item.name}</h4>
+                        <p>Rp ${parseInt(item.price).toLocaleString('id')}</p>
+                    </div>
+                </div>
+                `
+                $(`#${category}`).append(panel)
+            })
+        } else {
             let panel = `
             <div class="col-md-3 menu-item" data-menu-id="${item.id}">
-                <div class="thumbnail">
-                    <img src="/images/${item.img || 'nasi.jpg'}" alt="nasi">
-                <div class="caption">
-                    <h4>${item.name}</h4>
-                    <p>Rp ${parseInt(item.price).toLocaleString('id')}</p>
-                </div>
+                <p>Menu kosong</p>
             </div>
             `
             $(`#${category}`).append(panel)
-        })
+        }
+
+
     })
 }
 
@@ -279,7 +290,7 @@ function getItem(id) {
 }
 
 function setItemToModal(item) {
-    $('#modal-menu-item-image').attr('src', `/images/${item.img}`)
+    $('#modal-menu-item-image').attr('src', `/images/${item.category}/${item.img}`)
     $('.modal-title').first().html(item.name)
 }
 
