@@ -74,11 +74,13 @@ AppAsset::register($this);
                                 <li><a href="<?= Url::to(['menu/index', 'category' => Category::CATEGORY_SNACK]) ?>">Cemilan</a></li>
                             </ul>
                         </li>
-                        <li><a href="#">Persediaan</a></li>
+                        <!-- <li>
+                            <a href="#">Persediaan</a>
+                        </li> -->
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Laporan <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Penjualan</a></li>
+                                <li><a href="<?= Url::to(['report/sales']) ?>">Penjualan</a></li>
                             </ul>
                         </li>
                     </ul>

@@ -61,11 +61,14 @@ class Order extends RootModel
             'date' => 'Date',
             'total_payment' => 'Total Bayar',
             'is_paid' => 'Dibayar',
-            'rounding' => 'Pembulatan',
+            'rounding' => 'Rounding',
             'ordered_by' => 'Ordered By',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
-            'total' => 'Total'
+            'total' => 'Total',
+            'tax' => 'Pajak',
+            'beforeRounding' => 'Sebelum Rounding',
+            'changes' => 'Kembali'
         ];
     }
 
