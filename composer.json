@@ -31,7 +31,8 @@
         "tightenco/collect": "^6.17",
         "kartik-v/yii2-mpdf": "^1.0",
         "mdmsoft/yii2-admin": "~1.0",
-        "yiisoft/yii2-imagine": "^2.2"
+        "yiisoft/yii2-imagine": "^2.2",
+        "kartik-v/yii2-grid": "^3.3"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
