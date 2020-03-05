@@ -3,6 +3,7 @@
 use app\models\Order;
 use kartik\grid\GridView;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
 
 echo GridView::widget([
     'dataProvider' => $dataProvider,
@@ -13,6 +14,21 @@ echo GridView::widget([
     'hover' => true,
     'panel' => ['type' => 'default', 'heading' => 'Data Penjualan'],
     'toggleDataContainer' => ['class' => 'btn-group mr-2'],
+    'export' => false,
+    'toolbar' => [
+        [
+            'content' =>
+            Html::button('<i class="glyphicon glyphicon-print"></i> Cetak Laporan', [
+                'type' => 'button',
+                'title' => 'Cetak Laporan',
+                'class' => 'btn btn-primary',
+                'id' => 'btn-print-report'
+            ]),
+            'options' => ['class' => 'btn-group-sm']
+        ]
+    ],
+    // 'toggleDataContainer' => ['class' => 'btn-group-sm'],
+    'exportContainer' => ['class' => 'btn-group-sm'],
     'columns' => [
         [
             'attribute' => 'date',
