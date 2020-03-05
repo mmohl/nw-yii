@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use Tightenco\Collect\Support\Collection;
 use Yii;
 
 /**
@@ -91,5 +92,17 @@ class Order extends RootModel
             $akhir = $nominal + (1000 - $ratusan);
 
         return $akhir;
+    }
+
+    public function getOrderAmount()
+    {
+        $items = Collection::wrap($this->items);
+
+        return $items->reduce(fn($prev, $item) => $prev += ($item->qty * $item->price) , 0);
+    }
+
+    public function getOrderTax() 
+    {
+        return floor($this->getOrderAmount() * 0.1);
     }
 }
