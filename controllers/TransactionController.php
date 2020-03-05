@@ -112,7 +112,7 @@ class TransactionController extends \yii\web\Controller
         $subtotal = $items->reduce(function ($prev, $item) {
             return $prev + ($item['qty'] * $item['price']);
         }, 0);
-        $taxTotal = ceil(($subtotal * $tax) / 100);
+        $taxTotal = floor(($subtotal * $tax) / 100);
         $total = $subtotal + $taxTotal;
         $rounded = Order::pembulatan($total) - $total;
 
