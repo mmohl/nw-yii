@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use yii\helpers\Url;
 
 class SiteController extends Controller
 {
@@ -61,6 +62,11 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        // dd(Yii::$app->user->isGuest);
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(Url::to(['admin/user/login']));
+        }
+
         return $this->render('index');
     }
 
