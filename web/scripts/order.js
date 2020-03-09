@@ -53,7 +53,7 @@ $(document).ready(() => {
         })
 
         $.ajax({
-            url: '/index.php?r=transaction/make-order',
+            url: '/transaction/make-order',
             contentType: "application/json; charset=utf-8",
             data,
             dataType: 'JSON',
@@ -233,11 +233,11 @@ function showTotalItem() {
 }
 
 function getItems(category, page, perPage) {
-    const r = 'menu/menu-items'
+    // const r = 'menu/menu-items'
 
     $.ajax({
-        url: '/',
-        data: { r, category, page, perPage }
+        url: '/menu/menu-items',
+        data: { category, page, perPage }
     }).then(({ data, page, perPage, total }) => {
         $('.tab-pane').each((i, div) => {
             $(div).empty()
@@ -277,10 +277,10 @@ function init() {
 }
 
 function getItem(id) {
-    const r = 'menu/menu-item'
+    // const r = 'menu/menu-item'
     $.ajax({
-        url: '/',
-        data: { r, id }
+        url: '/menu/menu-item',
+        data: { id }
     }).then(({ data }) => {
         currentMenu = data
         resetModal()

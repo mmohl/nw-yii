@@ -11,12 +11,12 @@ $(document).on('click', '#table-customer-list tbody tr', ({ target }) => {
     const [tdCode, , , tdStatus] = tr.children()
     const orderCode = $(tdCode).html()
     const status = $(tdStatus).children('label').html()
-    const r = `transaction/get-order`
+    // const r = `transaction/get-order`
     currentOrderCode = orderCode
 
     $.ajax({
-        url: '/',
-        data: { r, orderCode }
+        url: '/transaction/get-order',
+        data: { orderCode }
     }).then(res => {
         $('#invoice-detail tbody').empty()
 
@@ -64,14 +64,14 @@ $('#input-payment').on("keyup", _.debounce(({ target: { value } }) => {
 }, 500))
 
 $('#btn-invoice-pay').on('click', () => {
-    const r = 'transaction/pay-order'
+    // const r = 'transaction/pay-order'
     const orderCode = currentOrderCode
     const payment = $('#input-payment').val() ? $('#input-payment').val().replace(/\./ig, '') : null
     const rounding = $('#input-rounding').val()
 
     $.ajax({
-        url: '/',
-        data: { r, orderCode, payment, rounding }
+        url: '/transaction/pay-order',
+        data: { orderCode, payment, rounding }
     }).then(res => {
         dt.ajax.reload()
         resetViewInvoice()
@@ -98,7 +98,7 @@ function init() {
     dt = $('#table-customer-list').DataTable({
         serverSide: true,
         ajax: {
-            url: '/index.php?r=transaction/cashier-datatable'
+            url: '/transaction/cashier-datatable'
         },
         initComplete: function () {
             intervalDt = setInterval('dt.ajax.reload()', 10000);
