@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use mdm\admin\models\form\Login;
 use yii\helpers\Url;
 
 class SiteController extends Controller
@@ -62,34 +63,26 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        // dd(Yii::$app->user->isGuest);
-        if (Yii::$app->user->isGuest) {
-            return $this->redirect(Url::to(['admin/user/login']));
-        }
+        if (Yii::$app->user->isGuest) return $this->actionLogin();
 
         return $this->render('index');
     }
 
-    /**
-     * Login action.
-     *
-     * @return Response|string
-     */
     public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
+        if (!Yii::$app->getUser()->isGuest) return $this->goHome();
 
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+        $this->layout = 'login';
+        $model = new Login();
+        if ($model->load(Yii::$app->getRequest()->post()) && $model->login()) {
+            Yii::$app->session->removeAllFlashes();
             return $this->goBack();
+        } else {
+            Yii::$app->session->setFlash('failure', "username atau password salah");
+            return $this->render('login', [
+                'model' => $model,
+            ]);
         }
-
-        $model->password = '';
-        return $this->render('login', [
-            'model' => $model,
-        ]);
     }
 
     /**

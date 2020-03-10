@@ -50,7 +50,7 @@ $config = [
         ],
         'user' => [
             'identityClass' => 'app\models\User',
-            'loginUrl' => ['admin/user/login'],
+            'loginUrl' => ['site/login'],
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
@@ -76,7 +76,7 @@ $config = [
         'class' => 'mdm\admin\components\AccessControl',
         'allowActions' => [
             // '/',
-            // 'site/*',
+            'site/login',
             'admin/*',
             // 'gii/*'
             // 'some-controller/some-action',
