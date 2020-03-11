@@ -78,7 +78,7 @@ class SiteController extends Controller
             Yii::$app->session->removeAllFlashes();
             return $this->goBack();
         } else {
-            if (!$model->login()) Yii::$app->session->setFlash('failure', "username atau password salah");
+            // if (!$model->login()) Yii::$app->session->setFlash('failure', "username atau password salah");
             return $this->render('login', [
                 'model' => $model,
             ]);
