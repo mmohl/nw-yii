@@ -34,7 +34,9 @@
         "yiisoft/yii2-imagine": "^2.2",
         "kartik-v/yii2-grid": "^3.3",
         "kartik-v/yii2-widget-select2": "^2.1",
-        "nesbot/carbon": "^2.31"
+        "nesbot/carbon": "^2.31",
+        "kartik-v/yii2-widget-datepicker": "^1.4",
+        "dompdf/dompdf": "^0.8.5"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
