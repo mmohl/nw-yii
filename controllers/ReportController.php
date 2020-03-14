@@ -38,6 +38,8 @@ class ReportController extends \yii\web\Controller
     public function actionPrint($month, $year)
     {
         // get your HTML raw content without any layouts or scripts
+        $month = date('m');
+        $year = date('Y');
         $days = Carbon::now()->daysInMonth;
         $tmp = Order::find()->where(['EXTRACT(MONTH from date)' => $month, 'EXTRACT(YEAR from date)' => $year])->orderBy('date')->all();
         $tmp = Collection::wrap($tmp)->groupBy('date')->mapWithKeys(function ($group, $key) {
