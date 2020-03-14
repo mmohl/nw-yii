@@ -105,8 +105,8 @@ function init() {
             // window.onbeforeunload = clearInterval(intervalDt)
         },
         columns: [
-            { data: 'order_code' },
-            { data: 'ordered_by' },
+            { data: 'order_code', sortable: false, searchable: false },
+            { data: 'ordered_by', sortable: false },
             {
                 data: 'items',
                 sortable: false,
@@ -116,6 +116,7 @@ function init() {
             {
                 data: 'is_paid',
                 searchable: false,
+                sortable: false,
                 render: (data, i, row) => `<label class="label label-${data == 1 ? 'success' : 'warning'}">${data == 1 ? 'Lunas' : 'Belum Bayar'}</label>`
             }
         ],

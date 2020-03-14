@@ -84,7 +84,10 @@ class TransactionController extends \yii\web\Controller
             // ->orderBy($order_field, $order_ascdesc)
             ->limit($limit)
             ->asArray()
+            ->orderBy(['is_paid' => SORT_ASC, 'id' => SORT_ASC])
             ->offset($offset);
+
+        if ($search['value'] != '') $query->where(['LIKE', 'ordered_by', $search['value']]);
 
         $data = $query->all();
 
@@ -220,5 +223,29 @@ class TransactionController extends \yii\web\Controller
         $printer->close();
 
         return $this->asJson(['print' => 1]);
+    }
+
+    public function actionDashboard()
+    {
+        $holder = [];
+
+        $holder['totalSales'] = [
+            ['label' => 'day', 'value' => Order::getTotalSales(Order::TOTAL_SALES_TAG_DAY)],
+            ['label' => 'week', 'value' => Order::getTotalSales(Order::TOTAL_SALES_TAG_WEEK)],
+            ['label' => 'month', 'value' => Order::getTotalSales(Order::TOTAL_SALES_TAG_MONTH)],
+            ['label' => 'year', 'value' => Order::getTotalSales(Order::TOTAL_SALES_TAG_YEAR)],
+        ];
+
+        $holder['totalOmzet'] = [
+            ['label' => 'day', 'value' => Order::getTotalOmzet(Order::TOTAL_SALES_TAG_DAY)],
+            ['label' => 'week', 'value' => Order::getTotalOmzet(Order::TOTAL_SALES_TAG_WEEK)],
+            ['label' => 'month', 'value' => Order::getTotalOmzet(Order::TOTAL_SALES_TAG_MONTH)],
+            ['label' => 'year', 'value' => Order::getTotalOmzet(Order::TOTAL_SALES_TAG_YEAR)],
+        ];
+
+        $holder['chartItems'] = Order::getChartDatasets();
+
+
+        return $this->asJson($holder);
     }
 }

@@ -4,6 +4,15 @@ use app\models\Order;
 use kartik\grid\GridView;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
+use kartik\date\DatePicker;
+use yii\web\View;
+
+$this->title = 'Laporan Penjualan';
+
+$this->registerJsFile(
+    '@web/js/report_print.js',
+    ['depends' => [\yii\web\JqueryAsset::className()]]
+);
 
 echo GridView::widget([
     'dataProvider' => $dataProvider,
@@ -32,11 +41,13 @@ echo GridView::widget([
     'columns' => [
         [
             'attribute' => 'date',
-            'filterType' => GridView::FILTER_SELECT2,
-            'filter' => ArrayHelper::map(Order::find()->select('date')->orderBy('date')->asArray()->distinct(true)->all(), 'date', 'date'),
+            'filterType' => GridView::FILTER_DATE,
+            // 'filter' => ArrayHelper::map(Order::find()->select('date')->orderBy('date')->asArray()->distinct(true)->all(), 'date', 'date'),
             'filterWidgetOptions' => [
-                'options' => ['prompt' => 'Pilih Tanggal'],
-                'pluginOptions' => ['allowClear' => true],
+                'pluginOptions' => [
+                    'format' => 'yyyy-mm-dd',
+                    'todayHighlight' => true
+                ]
             ],
             // 'filterInputOptions' => ['placeholder' => 'Any supplier'],
             'group' => true,  // enable grouping
