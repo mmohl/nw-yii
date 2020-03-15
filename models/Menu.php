@@ -36,7 +36,7 @@ class Menu extends RootModel
             [['price'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['name', 'category', 'img'], 'string', 'max' => 255],
-            [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg']
+            [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg']
         ];
     }
 

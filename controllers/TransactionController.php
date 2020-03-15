@@ -8,6 +8,7 @@ use app\models\Order;
 use app\models\OrderDetail;
 use Mike42\Escpos\EscposImage;
 use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 use Mike42\Escpos\Printer;
 use Tightenco\Collect\Support\Collection;
 use Yii;
@@ -25,7 +26,7 @@ class TransactionController extends \yii\web\Controller
     {
         $this->layout = 'order';
 
-        $categories = Category::find()->all();
+        $categories = Category::find()->orderBy(['id' => SORT_DESC])->all();
 
         return $this->render('_order', ['categories' => $categories]);
     }
@@ -149,15 +150,14 @@ class TransactionController extends \yii\web\Controller
         $os = PHP_OS;
 
         if ($os == 'Linux') {
-            $connector = "/dev/usb/lp1";
-        } else if ($os == 'Windows') {
-            $connector = '';
+            $connector = new FilePrintConnector("/dev/usb/lp1");
+        } else if ($os == 'WINNT') {
+            $connector = new WindowsPrintConnector("POS-58");;
         }
 
         $webroot = Yii::getAlias('@webroot');
         $logo = EscposImage::load("$webroot/images/app/logo_resize.png", false);
 
-        $connector = new FilePrintConnector($connector);
         $printer = new Printer($connector);
         // print logo
         $printer->setJustification(Printer::JUSTIFY_CENTER);

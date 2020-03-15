@@ -8,15 +8,15 @@ $(document).ready(() => {
         $(this).tab('show')
         const { target } = e
 
-        getItems($(target).data('category'), 1, 10)
+        getItems($(target).data('category'), 1, 20)
     })
-
+it
     $('#tab-small a').click(function (e) {
         e.preventDefault()
         $(this).tab('show')
         const { target } = e
 
-        getItems($(target).data('category'), 1, 10)
+        getItems($(target).data('category'), 1, 20)
     })
 
     $('.counter').on("click", ({ target }) => {
@@ -272,7 +272,7 @@ function getItems(category, page, perPage) {
 
 function init() {
     let activeCategory = $('li.active').first().children('a').data('category')
-    getItems(activeCategory, 1, 10)
+    getItems(activeCategory, 1, 20)
     showTotalItem()
 }
 

@@ -94,11 +94,11 @@ class Order extends RootModel
     {
         $ratusan = substr($nominal, -3);
         if ($ratusan < 500)
-            $akhir = $nominal - $ratusan;
+            $akhir = $ratusan;
         else
             $akhir = $nominal + (1000 - $ratusan);
 
-        return $akhir;
+        return $nominal;
     }
 
     public function getOrderAmount()
