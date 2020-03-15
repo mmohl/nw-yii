@@ -1,4 +1,5 @@
-<table class="table table-bordered table-condensed">
+<h1 style="text-align: center;">Laporan Penjualan</h1>
+<table width="100%">
     <thead>
         <tr>
             <th style="text-align: center;">Tanggal</th>
