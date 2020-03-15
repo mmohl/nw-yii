@@ -217,7 +217,7 @@ class TransactionController extends \yii\web\Controller
         $printer->text("Atas Kunjungan Anda\n");
         $printer->feed(1);
         $printer->text('Jl. Cisondari no. 11 Pasir Jambu Ciwidey');
-        $printer->feed(2);
+        $printer->feed(3);
         $printer->pulse();
 
         $printer->close();
