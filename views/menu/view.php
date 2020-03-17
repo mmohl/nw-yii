@@ -28,7 +28,9 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
-    <?= Html::img("@web/images/{$model->category}/{$model->img}", ['class' => 'img-responsive img-thumbnail', 'style' => 'width: 50%; margin-bottom: 1em;']) ?>
+    <?= Html::img($model->img != '' ? "@web/images/{$model->category}/{$model->img}" : "@web/images/app/default.jpg", ['class' => 'img-responsive img-thumbnail', 'style' => 'width: 300px; height: 300px; object-fit: cover; margin-bottom: 1em;']) ?>
+
+    <?= $model->renderTagsAsHtml() ?>
 
     <?= DetailView::widget([
         'model' => $model,

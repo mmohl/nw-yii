@@ -39,7 +39,7 @@ class HelloController extends Controller
     public function actionInitSeeder()
     {
         $categories = [
-            Category::CATEGORY_SNACK,
+            Category::CATEGORY_OTHER,
             Category::CATEGORY_FOOD,
             Category::CATEGORY_PACKAGE,
             Category::CATEGORY_BEVERAGE
@@ -73,7 +73,7 @@ class HelloController extends Controller
                 case Category::CATEGORY_FOOD:
                     $data['name'] = $faker->foodName();
                     break;
-                case Category::CATEGORY_SNACK:
+                case Category::CATEGORY_OTHER:
                     $data['name'] = $faker->dairyName();
                     break;
             }

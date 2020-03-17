@@ -105,15 +105,22 @@ class Order extends RootModel
     {
         $items = Collection::wrap($this->items);
 
-        return $items->reduce(fn($prev, $item) => $prev += ($item->qty * $item->price) , 0);
+        return $items->reduce(
+            function ($prev, $item) {
+                $prev += ($item->qty * $item->price);
+                return $prev;
+            },
+            0
+        );
     }
 
-    public function getOrderTax() 
+    public function getOrderTax()
     {
         return floor($this->getOrderAmount() * 0.1);
     }
 
-    public static function getTotalSales($tag) {
+    public static function getTotalSales($tag)
+    {
         $query = Order::find();
         $firstDate = '';
         $lastDate = '';
@@ -125,7 +132,7 @@ class Order extends RootModel
         } else if ($tag == Order::TOTAL_SALES_TAG_WEEK) {
             $firstDate = Carbon::now()->startOfWeek()->format($format);
             $lastDate = Carbon::now()->endOfWeek()->format($format);
-        } else if  ($tag == Order::TOTAL_SALES_TAG_MONTH) {
+        } else if ($tag == Order::TOTAL_SALES_TAG_MONTH) {
             $firstDate = Carbon::now()->firstOfMonth()->format($format);
             $lastDate = Carbon::now()->endOfMonth()->format($format);
         } else if ($tag == Order::TOTAL_SALES_TAG_YEAR) {
@@ -138,7 +145,8 @@ class Order extends RootModel
         return $query->count();
     }
 
-    public static function getTotalOmzet($tag) {
+    public static function getTotalOmzet($tag)
+    {
         $query = Order::find();
         $firstDate = '';
         $lastDate = '';
@@ -150,7 +158,7 @@ class Order extends RootModel
         } else if ($tag == Order::TOTAL_SALES_TAG_WEEK) {
             $firstDate = Carbon::now()->startOfWeek()->format($format);
             $lastDate = Carbon::now()->endOfWeek()->format($format);
-        } else if  ($tag == Order::TOTAL_SALES_TAG_MONTH) {
+        } else if ($tag == Order::TOTAL_SALES_TAG_MONTH) {
             $firstDate = Carbon::now()->firstOfMonth()->format($format);
             $lastDate = Carbon::now()->endOfMonth()->format($format);
         } else if ($tag == Order::TOTAL_SALES_TAG_YEAR) {
@@ -162,7 +170,7 @@ class Order extends RootModel
 
         $data = Collection::wrap($query->all());
 
-        $data = $data->reduce(function($prev, $order){
+        $data = $data->reduce(function ($prev, $order) {
             $prev += $order->getOrderAmount();
             return $prev;
         }, 0);
@@ -170,23 +178,24 @@ class Order extends RootModel
         return $data;
     }
 
-    public static function getChartDatasets() {
+    public static function getChartDatasets()
+    {
         $format = 'Y-m-d';
         $firstDate = Carbon::now()->startOfWeek()->format($format);
         $lastDate = Carbon::now()->endOfWeek()->format($format);
-        $items = (new Query())->select(['name','COUNT(name) as total'])
-        ->from('orders')
-        ->join('JOIN', 'order_details', 'order_details.order_id = orders.id')
-        ->where(['BETWEEN', 'date', $firstDate, $lastDate])
-        ->groupBy('order_details.name')
-        ->all();
+        $items = (new Query())->select(['name', 'COUNT(name) as total'])
+            ->from('orders')
+            ->join('JOIN', 'order_details', 'order_details.order_id = orders.id')
+            ->where(['BETWEEN', 'date', $firstDate, $lastDate])
+            ->groupBy('order_details.name')
+            ->all();
 
         $items = Collection::wrap($items);
 
         $chart = Collection::wrap([]);
-        $labels = $items->pluck('name')->map(function($name){
+        $labels = $items->pluck('name')->map(function ($name) {
             $name = strtolower($name);
-            return ucfirst($name); 
+            return ucfirst($name);
         });
 
         $dataset = ['data' => $items->pluck('total'), 'label' => 'Item', 'fill' => false];

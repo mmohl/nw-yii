@@ -2,7 +2,9 @@
 
 namespace app\models;
 
+use Tightenco\Collect\Support\Collection;
 use Yii;
+use yii\helpers\Html;
 
 /**
  * This is the model class for table "menus".
@@ -13,10 +15,12 @@ use Yii;
  * @property int $price
  * @property string|null $created_at
  * @property string|null $updated_at
+ * @property array|null $types
  */
 class Menu extends RootModel
 {
     public $imageFile;
+    public $types;
 
     /**
      * {@inheritdoc}
@@ -34,7 +38,7 @@ class Menu extends RootModel
         return [
             [['name', 'category', 'price'], 'required'],
             [['price'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['created_at', 'updated_at', 'types'], 'safe'],
             [['name', 'category', 'img'], 'string', 'max' => 255],
             [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg']
         ];
@@ -53,6 +57,8 @@ class Menu extends RootModel
             'img' => 'Gambar',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'types' => 'Jenis',
+            'imageFile' => 'Gambar'
         ];
     }
 
@@ -69,5 +75,31 @@ class Menu extends RootModel
         } else {
             return false;
         }
+    }
+
+    public function getTags()
+    {
+        return $this->hasMany(MenuTags::class, ['menu_id' => 'id']);
+    }
+
+    public function renderTagsAsHtml()
+    {
+        $tags = Collection::wrap($this->tags)->map(function ($tag) {
+            return Html::tag('span', $tag->name, ['class' => 'label label-primary']);
+        })->implode('&nbsp');
+
+        return Html::tag('p', $tags);
+    }
+
+    public function renderTagsAsSelectData()
+    {
+        $tags = Collection::wrap($this->tags)->pluck('name')->toArray();
+
+        return $tags;
+    }
+
+    public function loadTags()
+    {
+        $this->types = $this->renderTagsAsSelectData();
     }
 }

@@ -18,7 +18,7 @@ class Category extends RootModel
 {
     const CATEGORY_PACKAGE = 'package';
     const CATEGORY_BEVERAGE = 'beverage';
-    const CATEGORY_SNACK = 'snack';
+    const CATEGORY_OTHER = 'other';
     const CATEGORY_FOOD = 'food';
 
     /**
@@ -75,7 +75,7 @@ class Category extends RootModel
                 return 'makanan';
             case Category::CATEGORY_BEVERAGE:
                 return 'minuman';
-            case Category::CATEGORY_SNACK:
+            case Category::CATEGORY_OTHER:
                 return 'cemilan';
             default:
                 return 'kategori salah';

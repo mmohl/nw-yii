@@ -6,6 +6,8 @@ use app\models\Category;
 use Yii;
 use app\models\Menu;
 use app\models\MenuSearch;
+use app\models\MenuTags;
+use Tightenco\Collect\Support\Collection;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -70,6 +72,7 @@ class MenuController extends Controller
         $model = new Menu();
 
         if ($model->load(Yii::$app->request->post())) {
+            $tags = Collection::wrap($model->types);
             $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
             if ($model->imageFile) {
                 $model->img = "{$model->imageFile->baseName}.{$model->imageFile->extension}";
@@ -78,6 +81,15 @@ class MenuController extends Controller
             };
 
             $model->save();
+
+            if ($tags->isNotEmpty()) {
+                $tags->each(function ($tag) use ($model) {
+                    $menu = new MenuTags;
+                    $menu->name = $tag;
+                    $menu->menu_id = $model->id;
+                    $menu->save();
+                });
+            }
 
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -98,6 +110,7 @@ class MenuController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->loadTags();
 
         if ($model->load(Yii::$app->request->post())) {
             $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
@@ -144,7 +157,7 @@ class MenuController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = Menu::findOne($id)) !== null) {
+        if (($model = Menu::find()->with(['tags'])->where(['id' => $id])->one()) !== null) {
             return $model;
         }
 
