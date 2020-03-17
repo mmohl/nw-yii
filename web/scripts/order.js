@@ -10,7 +10,7 @@ $(document).ready(() => {
 
         getItems($(target).data('category'), 1, 20)
     })
-it
+
     $('#tab-small a').click(function (e) {
         e.preventDefault()
         $(this).tab('show')
@@ -245,13 +245,15 @@ function getItems(category, page, perPage) {
 
         if (data.length > 0) {
             data.forEach(item => {
+                let img = item.img ? `${category}/${item.img}` : `app/default.jpg`
                 let panel = `
                 <div class="col-md-3 menu-item" data-menu-id="${item.id}">
                     <div class="thumbnail">
-                        <img src="/images/${category}/${item.img}" alt="${item.name}">
+                        <img style="width: 100%; height: 10em; object-fit: cover;" src="/images/${img}" alt="${item.name}">
                     <div class="caption">
                         <h4>${item.name}</h4>
                         <p>Rp ${parseInt(item.price).toLocaleString('id')}</p>
+                    </div>
                     </div>
                 </div>
                 `
@@ -259,7 +261,7 @@ function getItems(category, page, perPage) {
             })
         } else {
             let panel = `
-            <div class="col-md-3 menu-item" data-menu-id="${item.id}">
+            <div class="col-md-3 menu-item" data-menu-id="${category}">
                 <p>Menu kosong</p>
             </div>
             `

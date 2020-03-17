@@ -1,10 +1,24 @@
 <?php
 
 use app\models\Category;
+use kartik\select2\Select2;
+
+$this->title = 'Pesan menu';
+
 ?>
 
-<div class="row">
-    <button class="btn btn-primary pull-right" type="button" id="btn-trigger-modal-cart">Keranjang <span id="total-items">0</span></button>
+<div class="row" style="margin-bottom: 10px;">
+    <div class="col-lg-3">
+        <?= Select2::widget([
+            'name' => 'cari makanan',
+            'size' => Select2::SMALL,
+            'options' => ['placeholder' => 'Cari menu'],
+            'pluginOptions' => [
+                'allowClear' => true
+            ],
+        ])  ?>
+    </div>
+    <button class="btn btn-primary pull-right col-lg-1" type="button" id="btn-trigger-modal-cart">Keranjang <span id="total-items">0</span></button>
 </div>
 
 <div class="row">
