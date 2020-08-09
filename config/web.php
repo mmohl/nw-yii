@@ -78,7 +78,7 @@ $config = [
             '/',
             // 'site/login',
             // 'site/logout',
-            // 'admin/*',
+            'admin/*',
             // 'transaction/*',
             // 'gii/*'
             // 'some-controller/some-action',

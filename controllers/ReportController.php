@@ -41,7 +41,7 @@ class ReportController extends \yii\web\Controller
         $month = date('m');
         $year = date('Y');
         $days = Carbon::now()->daysInMonth;
-        $tmp = Order::find()->where(['EXTRACT(MONTH from date)' => $month, 'EXTRACT(YEAR from date)' => $year])->orderBy('date')->all();
+        $tmp = Order::find()->where(['EXTRACT(MONTH from date)' => $month, 'EXTRACT(YEAR from date)' => $year])->andWhere(['is_ignored' => 0])->orderBy('date')->all();
         $tmp = Collection::wrap($tmp)->groupBy('date')->mapWithKeys(function ($group, $key) {
             $date = explode('-', $key);
             return [intval($date[2]) => $group];

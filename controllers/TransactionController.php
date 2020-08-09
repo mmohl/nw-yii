@@ -31,7 +31,21 @@ class TransactionController extends \yii\web\Controller
         return $this->render('_order', ['categories' => $categories]);
     }
 
+    public function actionOrderModify($id)
+    {
+        $order = Order::findOne($id);
+        $payload = Yii::$app->request->getRawBody();
+        $payload = Json::decode($payload);
 
+        $order->is_ignored = $payload['is_ignored'];
+
+        if ($order->save()) {
+            return $this->asJson(['message' => 'berhasil mengubah data']);
+        }
+
+        Yii::$app->response->statusCode = 400;
+        return $this->asJson(['message' => 'gagal membuat pesanan']);
+    }
 
     public function actionMakeOrder()
     {
@@ -161,66 +175,69 @@ class TransactionController extends \yii\web\Controller
         $logo = EscposImage::load("$webroot/images/app/logo_resize.png", false);
 
         $printer = new Printer($connector);
-        // print logo
-        $printer->setJustification(Printer::JUSTIFY_CENTER);
-        $printer->bitImage($logo);
 
-        /* Name of shop */
-        $printer->setJustification(Printer::JUSTIFY_CENTER);
-        // $printer->selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
-        // $printer->text(strtoupper('Nandjung Wangi') . "\n");
-        // $printer->text(ucwords('Jl cisondari no 11') . "\n");
-        // $printer->text(ucwords('pasir jambu ciwidey') . "\n");
+        for ($repeat = 0; $repeat < 2; $repeat++) {
+            // print logo
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer->bitImage($logo);
 
-        /* Title of receipt */
-        $printer->text("\n");
-        $printer->setEmphasis(false);
+            /* Name of shop */
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            // $printer->selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+            // $printer->text(strtoupper('Nandjung Wangi') . "\n");
+            // $printer->text(ucwords('Jl cisondari no 11') . "\n");
+            // $printer->text(ucwords('pasir jambu ciwidey') . "\n");
 
-        // order detail
-        $printer->selectPrintMode();
-        $printer->text("Pemesan" . str_pad($order->ordered_by, 32 - strlen('Pemesan'), ' ', STR_PAD_LEFT) . "\n");
-        $printer->text("Kode Pesanan" . str_pad($order->order_code, 32 - strlen('Kode Pesanan'), ' ', STR_PAD_LEFT) . "\n");
-        $printer->feed();
+            /* Title of receipt */
+            $printer->text("\n");
+            $printer->setEmphasis(false);
 
-        /* Items */
-        foreach ($order->items as $item) {
-            $price = number_format($item->price, 0, ',', '.');
-            $name = strtoupper($item->name);
-            $printer->text("{$item->qty}    {$name}" . str_pad($price, 32 - strlen("{$item->qty}    {$name}"), ' ', STR_PAD_LEFT));
+            // order detail
+            $printer->selectPrintMode();
+            $printer->text("Pemesan" . str_pad($order->ordered_by, 32 - strlen('Pemesan'), ' ', STR_PAD_LEFT) . "\n");
+            $printer->text("Kode Pesanan" . str_pad($order->order_code, 32 - strlen('Kode Pesanan'), ' ', STR_PAD_LEFT) . "\n");
+            $printer->feed();
+
+            /* Items */
+            foreach ($order->items as $item) {
+                $price = number_format($item->price, 0, ',', '.');
+                $name = strtoupper($item->name);
+                $printer->text("{$item->qty}    {$name}" . str_pad($price, 32 - strlen("{$item->qty}    {$name}"), ' ', STR_PAD_LEFT));
+            }
+
+            $printer->text("================================\n");
+
+            /* Result */
+            $printer->setEmphasis(true);
+            $printer->setEmphasis(false);
+
+            $tax = 10;
+            $subtotal = $items->reduce(function ($prev, $item) {
+                return $prev + ($item->qty * $item->price);
+            }, 0);
+            $taxTotal = ceil(($subtotal * $tax) / 100);
+            $total = $subtotal + $taxTotal;
+            $rounded = Order::pembulatan($total) - $total;
+            $totalItems = $items->reduce(function ($prev, $item) {
+                return $prev += $item->qty;
+            }, 0);
+            $printer->text("Items: $totalItems" . str_pad(number_format($subtotal, 0, ',', '.'), 32 - strlen("Items: $totalItems"), ' ', STR_PAD_LEFT) . "\n");
+            $printer->text('Tax 10%' . str_pad(number_format($taxTotal, 0, ',', '.'), 32 - strlen('Tax 10%'), ' ', STR_PAD_LEFT) . "\n");
+            $printer->text('Before Rounding' . str_pad(number_format($total, 0, ',', '.'), 32 - strlen('Before Rounding'), ' ', STR_PAD_LEFT) . "\n");
+            $printer->text('Rounding' . str_pad($rounded > 0 ? "+" . number_format($rounded, 0, ',', '.') : number_format($rounded, 0, ',', '.'), 32 - strlen('Rounding'), ' ', STR_PAD_LEFT) . "\n");
+            $printer->text('Total' . str_pad(number_format($total + $rounded, 0, ',', '.'), 32 - strlen('Total'), ' ', STR_PAD_LEFT) . "\n");
+
+            /* Footer */
+            $printer->text("================================\n");
+            $printer->feed();
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer->text("Terima Kasih\n");
+            $printer->text("Atas Kunjungan Anda\n");
+            $printer->feed(1);
+            $printer->text('Jl. Cisondari no. 11 Pasir Jambu Ciwidey');
+            $printer->feed(3);
+            $printer->pulse();
         }
-
-        $printer->text("================================\n");
-
-        /* Result */
-        $printer->setEmphasis(true);
-        $printer->setEmphasis(false);
-
-        $tax = 10;
-        $subtotal = $items->reduce(function ($prev, $item) {
-            return $prev + ($item->qty * $item->price);
-        }, 0);
-        $taxTotal = ceil(($subtotal * $tax) / 100);
-        $total = $subtotal + $taxTotal;
-        $rounded = Order::pembulatan($total) - $total;
-        $totalItems = $items->reduce(function ($prev, $item) {
-            return $prev += $item->qty;
-        }, 0);
-        $printer->text("Items: $totalItems" . str_pad(number_format($subtotal, 0, ',', '.'), 32 - strlen("Items: $totalItems"), ' ', STR_PAD_LEFT) . "\n");
-        $printer->text('Tax 10%' . str_pad(number_format($taxTotal, 0, ',', '.'), 32 - strlen('Tax 10%'), ' ', STR_PAD_LEFT) . "\n");
-        $printer->text('Before Rounding' . str_pad(number_format($total, 0, ',', '.'), 32 - strlen('Before Rounding'), ' ', STR_PAD_LEFT) . "\n");
-        $printer->text('Rounding' . str_pad($rounded > 0 ? "+" . number_format($rounded, 0, ',', '.') : number_format($rounded, 0, ',', '.'), 32 - strlen('Rounding'), ' ', STR_PAD_LEFT) . "\n");
-        $printer->text('Total' . str_pad(number_format($total + $rounded, 0, ',', '.'), 32 - strlen('Total'), ' ', STR_PAD_LEFT) . "\n");
-
-        /* Footer */
-        $printer->text("================================\n");
-        $printer->feed();
-        $printer->setJustification(Printer::JUSTIFY_CENTER);
-        $printer->text("Terima Kasih\n");
-        $printer->text("Atas Kunjungan Anda\n");
-        $printer->feed(1);
-        $printer->text('Jl. Cisondari no. 11 Pasir Jambu Ciwidey');
-        $printer->feed(3);
-        $printer->pulse();
 
         $printer->close();
 

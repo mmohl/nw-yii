@@ -175,6 +175,11 @@ class MenuController extends Controller
         $items = Menu::find()->where(['category' => $category])->offset($offset)->limit($perPage)->all();
         $total = Menu::find()->where(['category' => $category])->count();
 
+        $items = collect($items)->map(function ($item) {
+            if (is_null($item->img)) $item->img = 'default.png';
+            return $item;
+        });
+
         return $this->asJson(
             [
                 'page' => $page,

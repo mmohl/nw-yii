@@ -1,3 +1,5 @@
-$('#btn-print-report').on('click', function () {
-    window.open(`/report/print?month=1&year=2020`, '_blank')
+$("#btn-print-report").on("click", function () {
+  let year = $("#year-selector").val();
+
+  window.open(`/report/print?month=1&year=${year}`, "_blank");
 });

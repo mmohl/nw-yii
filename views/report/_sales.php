@@ -24,6 +24,12 @@ echo GridView::widget([
     'filterModel' => $searchModel,
     'showPageSummary' => true,
     'pjax' => true,
+    'pjaxSettings' => [
+        'neverTimeout' => true,
+        'options' => [
+            'id' => 'w0',
+        ]
+    ],
     'striped' => false,
     'hover' => true,
     'panel' => ['type' => 'default', 'heading' => 'Data Penjualan'],
@@ -32,12 +38,18 @@ echo GridView::widget([
     'toolbar' => [
         [
             'content' =>
-            Html::button('<i class="glyphicon glyphicon-print"></i> Cetak Laporan', [
-                'type' => 'button',
-                'title' => 'Cetak Laporan',
-                'class' => 'btn btn-primary',
-                'id' => 'btn-print-report'
-            ]),
+            Html::dropDownList('year-selector', date('Y'), Order::generateYearSelector(), [
+                'id' => 'year-selector',
+                'title' => 'Pilih tahun',
+                'class' => 'form-control'
+
+            ]) . '' .
+                Html::button('<i class="glyphicon glyphicon-print"></i> Cetak Laporan', [
+                    'type' => 'button',
+                    'title' => 'Cetak Laporan',
+                    'class' => 'btn btn-primary',
+                    'id' => 'btn-print-report'
+                ]),
             'options' => ['class' => 'btn-group-sm']
         ]
     ],
@@ -119,7 +131,7 @@ echo GridView::widget([
             'value' => function ($model) {
                 $total = 0;
                 foreach ($model->items as $item) {
-                    $total += ($item->qty * $item->price);
+                    if ($model->is_ignored == 0) $total += ($item->qty * $item->price);
                 }
 
                 return round(($total * 10) / 100);
@@ -134,7 +146,7 @@ echo GridView::widget([
             'value' => function ($model) {
                 $total = 0;
                 foreach ($model->items as $item) {
-                    $total += ($item->qty * $item->price);
+                    if ($model->is_ignored == 0) $total += ($item->qty * $item->price);
                 }
 
                 $tax = round(($total * 10) / 100);
@@ -162,7 +174,7 @@ echo GridView::widget([
             'value' => function ($model) {
                 $total = 0;
                 foreach ($model->items as $item) {
-                    $total += ($item->qty * $item->price);
+                    if ($model->is_ignored == 0) $total += ($item->qty * $item->price);
                 }
 
                 $tax = round(($total * 10) / 100);
@@ -196,10 +208,12 @@ echo GridView::widget([
         ],
         [
             'class' => '\kartik\grid\CheckboxColumn',
-            'attribute' => 'is_ignored',
+            // 'attribute' => 'is_ignored',
             'checkboxOptions' => function ($model, $key, $index, $widget) {
+                $options = ["value" => $model->is_ignored, 'data-id' => $model->id, 'title' => 'Abaikan transaksi ini?'];
+                if ($model->is_ignored == 1) $options['checked'] = 'checked';
 
-                return ["value" => $model->is_ignored, 'data-id' => $model->id];
+                return $options;
             },
         ],
     ],

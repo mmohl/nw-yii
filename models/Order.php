@@ -23,6 +23,7 @@ use yii\db\Query;
 class Order extends RootModel
 {
     private $total;
+    public $year;
 
     const TOTAL_SALES_TAG_DAY = 'day';
     const TOTAL_SALES_TAG_WEEK = 'week';
@@ -54,8 +55,9 @@ class Order extends RootModel
     {
         return [
             [['date', 'ordered_by'], 'required'],
-            [['id', 'total_payment', 'is_paid', 'rounding'], 'integer'],
-            [['date', 'created_at', 'updated_at', 'order_code', 'total', 'is_ignored'], 'safe'],
+            [['id', 'total_payment', 'is_paid', 'rounding', 'is_ignored'], 'integer'],
+            // [['is_ignored'], 'string'],
+            [['date', 'created_at', 'updated_at', 'order_code', 'total', 'year'], 'safe'],
             [['ordered_by'], 'string', 'max' => 255],
         ];
     }
@@ -205,5 +207,14 @@ class Order extends RootModel
         $chart->put('labels', $labels);
 
         return $chart;
+    }
+
+    public static function generateYearSelector($limit = 10)
+    {
+        $years = collect(Order::find()->select('EXTRACT(YEAR FROM date) as year')->distinct()->orderBy('year ASC')->asArray()->all());
+
+        return $years->pluck('year')->mapWithKeys(function ($year) {
+            return [$year => $year];
+        })->toArray();
     }
 }
