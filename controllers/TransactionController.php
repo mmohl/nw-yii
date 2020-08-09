@@ -31,6 +31,8 @@ class TransactionController extends \yii\web\Controller
         return $this->render('_order', ['categories' => $categories]);
     }
 
+
+
     public function actionMakeOrder()
     {
         $payload = Yii::$app->request->getRawBody();

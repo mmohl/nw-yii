@@ -18,6 +18,7 @@ use yii\db\Query;
  * @property int $is_paid
  * @property int $total_payment
  * @property int $rounding
+ * @property string $is_ignored
  */
 class Order extends RootModel
 {
@@ -54,7 +55,7 @@ class Order extends RootModel
         return [
             [['date', 'ordered_by'], 'required'],
             [['id', 'total_payment', 'is_paid', 'rounding'], 'integer'],
-            [['date', 'created_at', 'updated_at', 'order_code', 'total'], 'safe'],
+            [['date', 'created_at', 'updated_at', 'order_code', 'total', 'is_ignored'], 'safe'],
             [['ordered_by'], 'string', 'max' => 255],
         ];
     }
@@ -76,7 +77,8 @@ class Order extends RootModel
             'total' => 'Total',
             'tax' => 'Pajak',
             'beforeRounding' => 'Sebelum Rounding',
-            'changes' => 'Kembali'
+            'changes' => 'Kembali',
+            'is_ignored' => 'Abaikan'
         ];
     }
 

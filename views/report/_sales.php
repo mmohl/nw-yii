@@ -11,7 +11,12 @@ $this->title = 'Laporan Penjualan';
 
 $this->registerJsFile(
     '@web/js/report_print.js',
-    ['depends' => [\yii\web\JqueryAsset::className()]]
+    ['depends' => [\yii\web\JqueryAsset::class]]
+);
+
+$this->registerJsFile(
+    '@web/js/report/sales.js',
+    ['depends' => [\yii\web\JqueryAsset::class]]
 );
 
 echo GridView::widget([
@@ -188,6 +193,14 @@ echo GridView::widget([
 
                 return $model->total_payment - ($total + $tax + $model->rounding);
             }
+        ],
+        [
+            'class' => '\kartik\grid\CheckboxColumn',
+            'attribute' => 'is_ignored',
+            'checkboxOptions' => function ($model, $key, $index, $widget) {
+
+                return ["value" => $model->is_ignored, 'data-id' => $model->id];
+            },
         ],
     ],
 ]);
