@@ -133,6 +133,7 @@ echo GridView::widget([
                 foreach ($model->items as $item) {
                     if ($model->is_ignored == 0) $total += ($item->qty * $item->price);
                 }
+                if ($model->is_ignored == '1') $total = 0;
 
                 return round(($total * 10) / 100);
             }
@@ -150,6 +151,7 @@ echo GridView::widget([
                 }
 
                 $tax = round(($total * 10) / 100);
+                if ($model->is_ignored == '1') $tax = 0;
 
                 return $total + $tax;
             }
@@ -178,6 +180,7 @@ echo GridView::widget([
                 }
 
                 $tax = round(($total * 10) / 100);
+                if ($model->is_ignored == '1') $tax = 0;
 
                 return $total + $tax + $model->rounding;
             }
@@ -202,6 +205,7 @@ echo GridView::widget([
                 }
 
                 $tax = ($total * 10) / 100;
+                if ($model->is_ignored == '1') $tax = 0;
 
                 return $model->total_payment - ($total + $tax + $model->rounding);
             }

@@ -133,6 +133,7 @@ class TransactionController extends \yii\web\Controller
             return $prev + ($item['qty'] * $item['price']);
         }, 0);
         $taxTotal = floor(($subtotal * $tax) / 100);
+        if ($order['is_ignored'] == '1') $taxTotal = 0;
         $total = $subtotal + $taxTotal;
         $rounded = Order::pembulatan($total) - $total;
 
@@ -144,17 +145,19 @@ class TransactionController extends \yii\web\Controller
         return $this->asJson($order);
     }
 
-    public function actionPayOrder($orderCode, $payment, $rounding)
+    public function actionPayOrder($orderCode, $payment, $rounding, $isIgnored)
     {
         $order = Order::find()->where(['order_code' => $orderCode])->one();
 
         $order->is_paid = 1;
         $order->total_payment = $payment;
         $order->rounding = $rounding;
+        $order->is_ignored = $isIgnored == 'true' ? 1 : 0;
 
         $order->save(false);
 
-        return $this->actionPrint($orderCode);
+        return $this->asJson(['test']);
+        // return $this->actionPrint($orderCode);
     }
 
     public function actionPrint($orderCode)

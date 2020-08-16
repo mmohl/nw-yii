@@ -3,12 +3,26 @@
 use app\assets\CashierAsset;
 
 CashierAsset::register($this);
+$this->title = 'Kasir';
 ?>
 
 <style>
     table tfoot tr td:first-child {
         font-weight: bold;
     }
+table#invoice-detail tbody {
+    display:block;
+    height:250px;
+    overflow:auto;
+}
+table#invoice-detail thead, table#invoice-detail tbody tr {
+    display:table;
+    width:100%;
+    table-layout:fixed;
+}
+table#invoice-detail tfoot tr td {
+    width: 120px;
+}
 </style>
 <div class="row">
     <!-- datatable -->
@@ -20,6 +34,7 @@ CashierAsset::register($this);
                         <tr>
                             <th>Kode Pesanan</th>
                             <th>Pemesan</th>
+                            <th>No. Meja</th>
                             <th>Total</th>
                             <th>Status</th>
                         </tr>
@@ -55,14 +70,14 @@ CashierAsset::register($this);
                                 <td colspan="2">Pajak</td>
                                 <td><input type="text" readonly class="form-control inputs" id="input-tax"></td>
                             </tr>
-                            <tr>
+                            <!-- <tr>
                                 <td colspan="2">Sebelum Rounding</td>
                                 <td><input type="text" readonly class="form-control inputs" id="input-before-rounding"></td>
-                            </tr>
-                            <tr>
+                            </tr> -->
+                            <!-- <tr>
                                 <td colspan="2">Nilai Rounding</td>
                                 <td><input type="text" readonly class="form-control inputs" id="input-rounding"></td>
-                            </tr>
+                            </tr> -->
                             <tr>
                                 <td colspan="2">Total</td>
                                 <td><input type="text" readonly class="form-control inputs" id="input-total"></td>
@@ -74,6 +89,10 @@ CashierAsset::register($this);
                             <tr>
                                 <td colspan="2">Total Kembali</td>
                                 <td><input type="text" readonly class="form-control inputs" id="input-changes"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Abaikan</td>
+                                <td><input type="checkbox" readonly class="form-control inputs pull-left" id="input-ignored"></td>
                             </tr>
                             <tr>
                                 <td colspan="3"><button disabled class="btn btn-primary btn-sm" type="button" id="btn-invoice-pay">Bayar</button></td>
