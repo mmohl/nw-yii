@@ -69,7 +69,7 @@ class Order extends RootModel
     {
         return [
             'id' => 'ID',
-            'date' => 'Date',
+            'date' => 'Tanggal',
             'total_payment' => 'Total Bayar',
             'is_paid' => 'Dibayar',
             'rounding' => 'Rounding',

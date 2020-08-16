@@ -35,12 +35,38 @@ class ReportController extends \yii\web\Controller
         }
     }
 
+    public function actionGetMonths($year)
+    {
+        $order = Order::find()->select('date')->where(["EXTRACT(YEAR FROM date)" => "$year"])->distinct()->orderBy('date desc')->one();
+        Carbon::setLocale('id');
+        $carbon = Carbon::createFromFormat('Y-m-d', $order->date);
+        $holder = collect();
+        $currentYear = date('Y');
+
+        for ($i = 1; $i <= 12; $i++) {
+            $tmpCarbon = Carbon::createFromFormat('Y-m-d', date("Y-$i-1"));
+            $monthName = $tmpCarbon->monthName;
+            if ($currentYear > $year) {
+                $isEnabled = true;
+                $isSelected = false;
+            } else {
+                $isEnabled = $carbon->month >= $i;
+                $isSelected = $carbon->month == $i;
+            }
+
+            $holder->add(['name' => $monthName, 'value' => $i, 'isEnabled' => $isEnabled, 'isSelected' => $isSelected]);
+        }
+
+        return $this->asJson(['months' => $holder->toArray()]);
+    }
+
     public function actionPrint($month, $year)
     {
         // get your HTML raw content without any layouts or scripts
-        $month = date('m');
-        $year = date('Y');
-        $days = Carbon::now()->daysInMonth;
+        Carbon::setLocale('id');
+        $tmpCarbon = Carbon::createFromFormat('Y-m', "$year-$month");
+        $days = $tmpCarbon->daysInMonth;
+
         $tmp = Order::find()->where(['EXTRACT(MONTH from date)' => $month, 'EXTRACT(YEAR from date)' => $year])->andWhere(['is_ignored' => 0])->orderBy('date')->all();
         $tmp = Collection::wrap($tmp)->groupBy('date')->mapWithKeys(function ($group, $key) {
             $date = explode('-', $key);
@@ -57,11 +83,8 @@ class ReportController extends \yii\web\Controller
             }
         }
 
-        // dd($tmp, $orders);
         $this->layout = 'print';
-        $content =  $this->render('_print', ['orders' => $orders]);
-
-        // reference the Dompdf namespace
+        $content =  $this->render('_print', ['orders' => $orders, 'month' => $tmpCarbon->monthName, 'year' => $year]);
 
         // instantiate and use the dompdf class
         $dompdf = new Dompdf();
@@ -76,6 +99,6 @@ class ReportController extends \yii\web\Controller
         // Output the generated PDF to Browser
         // $dompdf->output();
         ob_end_clean();
-        return $dompdf->stream("Laporan-Penjualan-$month-$year.pdf");
+        return $dompdf->stream("Laporan-Penjualan-{$tmpCarbon->monthName}-$year.pdf");
     }
 }

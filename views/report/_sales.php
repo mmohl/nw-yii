@@ -43,14 +43,19 @@ echo GridView::widget([
                 'title' => 'Pilih tahun',
                 'class' => 'form-control'
 
-            ]) . '' .
+            ]) . '&nbsp;' . Html::dropDownList('year-selector', date('Y'), ['Pilih Bulan'], [
+                'id' => 'month-selector',
+                'title' => 'Pilih bulan',
+                'class' => 'form-control',
+                'disabled' => true
+            ]) . '&nbsp;' .
                 Html::button('<i class="glyphicon glyphicon-print"></i> Cetak Laporan', [
                     'type' => 'button',
                     'title' => 'Cetak Laporan',
                     'class' => 'btn btn-primary',
                     'id' => 'btn-print-report'
                 ]),
-            'options' => ['class' => 'btn-group-sm']
+            'options' => ['class' => '', 'style' => 'display: flex;']
         ]
     ],
     // 'toggleDataContainer' => ['class' => 'btn-group-sm'],

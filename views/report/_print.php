@@ -1,4 +1,7 @@
-<h1 style="text-align: center;">Laporan Penjualan</h1>
+<h1 style="text-align: center;">
+    Laporan Penjualan <br>
+    <?= "$month $year" ?>
+</h1>
 <table width="100%">
     <thead>
         <tr>
@@ -16,13 +19,13 @@
                 <td><?= !$groupOrders ? '-' : $day . date('-m-Y') ?></td>
                 <td style="text-align: right;"><?= !$groupOrders ? '-' : $groupOrders->count() ?></td>
                 <td style="text-align: right;"><?= !$groupOrders ? '-' : number_format($groupOrders->reduce(function ($prev, $next) {
-                                                        $prev += $next->getOrderAmount();
-                                                        return $prev;
-                                                    }, 0), 0, ',', '.') ?></td>
+                                                    $prev += $next->getOrderAmount();
+                                                    return $prev;
+                                                }, 0), 0, ',', '.') ?></td>
                 <td style="text-align: right;"><?= !$groupOrders ? '-' : number_format($groupOrders->reduce(function ($prev, $next) {
-                                                        $prev += $next->getOrderTax();
-                                                        return $prev;
-                                                    }, 0), 0, ',', '.') ?></td>
+                                                    $prev += $next->getOrderTax();
+                                                    return $prev;
+                                                }, 0), 0, ',', '.') ?></td>
             </tr>
         <?php endforeach ?>
     </tbody>
