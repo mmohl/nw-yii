@@ -113,12 +113,32 @@ class MenuController extends Controller
         $model->loadTags();
 
         if ($model->load(Yii::$app->request->post())) {
+            $tags = Collection::wrap($model->types);
             $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
             if ($model->imageFile) {
                 $model->img = "{$model->imageFile->baseName}.{$model->imageFile->extension}";
                 $model->upload();
                 $model->imageFile = null;
-            };
+            }
+
+            $tags = $tags->filter(function ($tag) {
+                return trim($tag) != '';
+            })->values();
+
+            if ($tags->isNotEmpty()) {
+                $tags->each(function ($tag) use ($model) {
+                    $existTag = MenuTags::find()->where(['menu_id' => $model->id, 'name' => $tag])->one();
+
+                    if (!$existTag) {
+                        $menu = new MenuTags;
+                        $menu->name = $tag;
+                        $menu->menu_id = $model->id;
+                        $menu->save();
+                    }
+                });
+            } else {
+                Menu::deleteAllTags($model);
+            }
 
             $model->save();
             return $this->redirect(['view', 'id' => $model->id]);

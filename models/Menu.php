@@ -102,4 +102,24 @@ class Menu extends RootModel
     {
         $this->types = $this->renderTagsAsSelectData();
     }
+
+    public function beforeDelete()
+    {
+        Yii::$app
+            ->db
+            ->createCommand()
+            ->delete('menu_tags', ['menu_id' => $this->id])
+            ->execute();
+
+        return parent::beforeDelete();
+    }
+
+    public static function deleteAllTags(Menu $menu)
+    {
+        Yii::$app
+            ->db
+            ->createCommand()
+            ->delete('menu_tags', ['menu_id' => $menu->id])
+            ->execute();
+    }
 }
