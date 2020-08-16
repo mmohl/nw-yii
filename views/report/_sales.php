@@ -68,7 +68,8 @@ echo GridView::widget([
             'filterWidgetOptions' => [
                 'pluginOptions' => [
                     'format' => 'yyyy-mm-dd',
-                    'todayHighlight' => true
+                    'todayHighlight' => true,
+                    'endDate' => date('Y-m-d')
                 ]
             ],
             // 'filterInputOptions' => ['placeholder' => 'Any supplier'],
