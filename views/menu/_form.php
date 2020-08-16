@@ -37,6 +37,8 @@ use kartik\select2\Select2;
         ]
     ]) ?>
 
+    <?= $form->field($model, 'description')->textarea(['rows' => 4]) ?>
+
     <?= $form->field($model, 'category')->hiddenInput(['value' => $category])->label('') ?>
     <div class="form-group">
         <?= Html::submitButton('Simpan', ['class' => 'btn btn-success']) ?>

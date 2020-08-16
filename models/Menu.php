@@ -16,6 +16,7 @@ use yii\helpers\Html;
  * @property string|null $created_at
  * @property string|null $updated_at
  * @property array|null $types
+ * @property string $description
  */
 class Menu extends RootModel
 {
@@ -39,7 +40,7 @@ class Menu extends RootModel
             [['name', 'category', 'price'], 'required'],
             [['price'], 'integer'],
             [['created_at', 'updated_at', 'types'], 'safe'],
-            [['name', 'category', 'img'], 'string', 'max' => 255],
+            [['name', 'category', 'img', 'description'], 'string', 'max' => 255],
             [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg']
         ];
     }
@@ -58,7 +59,8 @@ class Menu extends RootModel
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'types' => 'Jenis',
-            'imageFile' => 'Gambar'
+            'imageFile' => 'Gambar',
+            'description' => 'Deskripsi'
         ];
     }
 

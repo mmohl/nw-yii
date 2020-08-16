@@ -28,9 +28,14 @@ $this->params['breadcrumbs'][] = $this->title;
         ]) ?>
     </p>
 
-    <?= Html::img($model->img != '' ? "@web/images/{$model->category}/{$model->img}" : "@web/images/app/default.jpg", ['class' => 'img-responsive img-thumbnail', 'style' => 'width: 300px; height: 300px; object-fit: cover; margin-bottom: 1em;']) ?>
-
-    <?= $model->renderTagsAsHtml() ?>
+    <div class="row">
+        <div class="col-lg-3">
+            <?= Html::img($model->img != '' ? "@web/images/{$model->category}/{$model->img}" : "@web/images/app/default.jpg", ['class' => 'img-responsive img-thumbnail', 'style' => 'width: 300px; height: 300px; object-fit: cover; margin-bottom: 1em;']) ?>
+        </div>
+        <div class="col-lg-9" style="border: 1px #ddd solid; height: 300px; padding: 5px; border-radius: 5px;">
+            <?= $model->description ?>
+        </div>
+    </div>
 
     <?= DetailView::widget([
         'model' => $model,
@@ -40,7 +45,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label'  => 'Kategori',
                 'value'  => $translate_category
             ],
-            'price:currency'
+            'price:currency',
+            [
+                'label' => 'Jenis',
+                'format' => 'raw',
+                'value' => $model->renderTagsAsHtml()
+            ]
         ],
     ]) ?>
 
