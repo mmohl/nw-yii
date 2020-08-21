@@ -66,7 +66,7 @@ class TransactionController extends \yii\web\Controller
 
         $order = new Order();
         $order->date = date('Y-m-d');
-        $order->ordered_by = $orderedBy;
+        $order->ordered_by = ucfirst($orderedBy);
         $order->order_code = Order::makeOrderCode();
         $order->table_number = $tableNumber;
 
