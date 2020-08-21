@@ -32,6 +32,9 @@ class Order extends RootModel
     const PAID = 1;
     const NOT_PAID = 0;
 
+    const ORDER_NEW = 'new';
+    const ORDER_ADDITIONAL = 'additional';
+
     public function setTotal($val)
     {
         $this->total = $val;

@@ -196,7 +196,8 @@ class MenuController extends Controller
         $total = Menu::find()->where(['category' => $category])->count();
 
         $items = collect($items)->map(function ($item) {
-            if (is_null($item->img)) $item->img = 'default.png';
+            // if (is_null($item->img)) 
+            $item->img = 'app/default.jpg';
             return $item;
         });
 

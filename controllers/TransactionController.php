@@ -84,6 +84,10 @@ class TransactionController extends \yii\web\Controller
                 $orderedItem->save();
             }
 
+            $items = collect(OrderDetail::find()->where(['order_id' => $order->id])->all());
+
+            $this->actionPrintMenu($order->order_code, $items);
+
             return $this->asJson(['message' => 'berhasil membuat pesanan']);
         }
 
@@ -98,6 +102,7 @@ class TransactionController extends \yii\web\Controller
 
         $orderId = $payload['orderId'];
         $items = $payload['items'];
+        $order = Order::find()->select('order_code')->where(['id' => $orderId])->one();
 
         foreach ($items as $item) {
             $existingItem = OrderDetail::find()->where(['order_id' => $orderId, 'menu_id' => $item['id']])->one();
@@ -118,7 +123,10 @@ class TransactionController extends \yii\web\Controller
                 $orderedItem->save(false);
             }
         }
+        $ids = collect($items)->pluck('id')->toArray();
+        $newItems = collect(OrderDetail::find()->where(['order_id' => $order->id, 'menu_id' => $ids])->all());
 
+        $this->actionPrintMenu($order->order_code, $newItems, Order::ORDER_ADDITIONAL);
         Yii::$app->response->statusCode = 200;
         return $this->asJson(['message' => 'berhasil menambahkan pesanan']);
     }
@@ -199,8 +207,53 @@ class TransactionController extends \yii\web\Controller
 
         $order->save(false);
 
-        return $this->asJson(['test']);
-        // return $this->actionPrint($orderCode);
+        // return $this->asJson(['test']);
+        return $this->actionPrint($orderCode);
+    }
+
+    public function actionPrintMenu($orderCode, $items, $type = Order::ORDER_NEW)
+    {
+        $order = Order::find()->where(['order_code' => $orderCode])->one();
+
+        $connector = '';
+        $os = PHP_OS;
+
+        if ($os == 'Linux') {
+            $connector = new FilePrintConnector("/dev/usb/lp1");
+        } else if ($os == 'WINNT') {
+            $connector = new WindowsPrintConnector("POS-58");;
+        }
+
+        $orderType = ucfirst($type == Order::ORDER_NEW ? 'baru' : 'tambahan');
+
+        $webroot = Yii::getAlias('@webroot');
+        $logo = EscposImage::load("$webroot/images/app/logo_resize.png", false);
+
+        $printer = new Printer($connector);
+
+        /* Title of receipt */
+        $printer->text("\n");
+        $printer->setEmphasis(false);
+
+        // order detail
+        $printer->selectPrintMode();
+        $printer->text("Order" . str_pad($orderType, 32 - strlen('Order'), ' ', STR_PAD_LEFT) . "\n");
+        $printer->text("Pemesan" . str_pad($order->ordered_by, 32 - strlen('Pemesan'), ' ', STR_PAD_LEFT) . "\n");
+        $printer->text("No. Meja" . str_pad($order->table_number, 32 - strlen('No. Meja'), ' ', STR_PAD_LEFT) . "\n");
+        $printer->text("Kode Pesanan" . str_pad($order->order_code, 32 - strlen('Kode Pesanan'), ' ', STR_PAD_LEFT) . "\n");
+        $printer->feed();
+
+        /* Items */
+        foreach ($items as $item) {
+            $name = $item->name . "\n";
+            $printer->text("[{$item->qty}] {$name}");
+        }
+
+        $printer->feed(3);
+
+        $printer->close();
+
+        return $this->asJson(['print' => 1]);
     }
 
     public function actionPrint($orderCode)
@@ -222,7 +275,7 @@ class TransactionController extends \yii\web\Controller
 
         $printer = new Printer($connector);
 
-        for ($repeat = 0; $repeat < 2; $repeat++) {
+        for ($repeat = 0; $repeat < 1; $repeat++) {
             // print logo
             $printer->setJustification(Printer::JUSTIFY_CENTER);
             $printer->bitImage($logo);
@@ -241,13 +294,14 @@ class TransactionController extends \yii\web\Controller
             // order detail
             $printer->selectPrintMode();
             $printer->text("Pemesan" . str_pad($order->ordered_by, 32 - strlen('Pemesan'), ' ', STR_PAD_LEFT) . "\n");
+            $printer->text("No. Meja" . str_pad($order->table_number, 32 - strlen('No. Meja'), ' ', STR_PAD_LEFT) . "\n");
             $printer->text("Kode Pesanan" . str_pad($order->order_code, 32 - strlen('Kode Pesanan'), ' ', STR_PAD_LEFT) . "\n");
             $printer->feed();
 
             /* Items */
             foreach ($order->items as $item) {
                 $price = number_format($item->price, 0, ',', '.');
-                $name = strtoupper($item->name);
+                $name = strlen($item->name) > 15 ? substr(strtoupper($item->name), 0, 15) . '...' : $item->name;
                 $printer->text("{$item->qty}    {$name}" . str_pad($price, 32 - strlen("{$item->qty}    {$name}"), ' ', STR_PAD_LEFT));
             }
 
