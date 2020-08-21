@@ -14,6 +14,7 @@ use Yii;
  * @property int $price
  * @property string|null $created_at
  * @property string|null $updated_at
+ * @property int $menu_id
  */
 class OrderDetail extends RootModel
 {
@@ -32,7 +33,7 @@ class OrderDetail extends RootModel
     {
         return [
             [['order_id', 'name', 'qty', 'price'], 'required'],
-            [['id', 'order_id', 'qty', 'price'], 'integer'],
+            [['id', 'order_id', 'qty', 'price', 'menu_id'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
             [['name'], 'string', 'max' => 255],
         ];
@@ -51,6 +52,7 @@ class OrderDetail extends RootModel
             'price' => 'Price',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'menu_id' => 'menu_id'
         ];
     }
 

@@ -13,10 +13,16 @@ use Mike42\Escpos\Printer;
 use Tightenco\Collect\Support\Collection;
 use Yii;
 use yii\helpers\Json;
-use yii\helpers\VarDumper;
 
 class TransactionController extends \yii\web\Controller
 {
+    public function beforeAction($action)
+    {
+        $this->enableCsrfValidation = false;
+
+        return parent::beforeAction($action);
+    }
+
     public function actionIndex()
     {
         return $this->render('index');
@@ -49,16 +55,20 @@ class TransactionController extends \yii\web\Controller
 
     public function actionMakeOrder()
     {
+        $this->enableCsrfValidation = false;
+
         $payload = Yii::$app->request->getRawBody();
         $payload = Json::decode($payload);
 
         $orderedBy = $payload['orderedBy'];
         $items = $payload['items'];
+        $tableNumber = $payload['tableNumber'];
 
         $order = new Order();
         $order->date = date('Y-m-d');
         $order->ordered_by = $orderedBy;
         $order->order_code = Order::makeOrderCode();
+        $order->table_number = $tableNumber;
 
         if ($order->save()) {
             foreach ($items as $item) {
@@ -69,15 +79,48 @@ class TransactionController extends \yii\web\Controller
                 $orderedItem->name = $menuItem->name;
                 $orderedItem->price = $menuItem->price;
                 $orderedItem->qty = $item['qty'];
+                $orderedItem->menu_id = $menuItem->id;
 
                 $orderedItem->save();
             }
 
-            return $this->asJson(['message' => 'berhasil memebuat pesanan']);
+            return $this->asJson(['message' => 'berhasil membuat pesanan']);
         }
 
         Yii::$app->response->statusCode = 400;
         return $this->asJson(['message' => 'gagal membuat pesanan']);
+    }
+
+    public function actionAddNewItemsOrder()
+    {
+        $payload = Yii::$app->request->getRawBody();
+        $payload = Json::decode($payload);
+
+        $orderId = $payload['orderId'];
+        $items = $payload['items'];
+
+        foreach ($items as $item) {
+            $existingItem = OrderDetail::find()->where(['order_id' => $orderId, 'menu_id' => $item['id']])->one();
+
+            if ($existingItem) {
+                $existingItem->qty += $item['qty'];
+                $existingItem->save(false);
+            } else {
+                $orderedItem = new OrderDetail();
+                $menuItem = Menu::findOne(['id' => $item['id']]);
+
+                $orderedItem->order_id = $orderId;
+                $orderedItem->name = $menuItem->name;
+                $orderedItem->price = $menuItem->price;
+                $orderedItem->qty = $item['qty'];
+                $orderedItem->menu_id = $menuItem->id;
+
+                $orderedItem->save(false);
+            }
+        }
+
+        Yii::$app->response->statusCode = 200;
+        return $this->asJson(['message' => 'berhasil menambahkan pesanan']);
     }
 
     public function actionCashierDatatable()
@@ -269,5 +312,12 @@ class TransactionController extends \yii\web\Controller
 
 
         return $this->asJson($holder);
+    }
+
+    public function actionUnfinishedOrderToday()
+    {
+        $orders = Order::find()->where(['date' => date('Y-m-d'), 'is_paid' => Order::NOT_PAID])->orderBy(['id' => SORT_ASC])->asArray()->all();
+
+        return $this->asJson($orders);
     }
 }

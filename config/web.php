@@ -79,7 +79,8 @@ $config = [
             // 'site/login',
             // 'site/logout',
             'admin/*',
-            // 'transaction/*',
+            'menu/*',
+            'transaction/*',
             // 'gii/*'
             // 'some-controller/some-action',
             // The actions listed here will be allowed to everyone including guests.

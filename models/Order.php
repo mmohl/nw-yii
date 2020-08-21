@@ -29,6 +29,8 @@ class Order extends RootModel
     const TOTAL_SALES_TAG_WEEK = 'week';
     const TOTAL_SALES_TAG_MONTH = 'month';
     const TOTAL_SALES_TAG_YEAR = 'year';
+    const PAID = 1;
+    const NOT_PAID = 0;
 
     public function setTotal($val)
     {
