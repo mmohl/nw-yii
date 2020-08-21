@@ -123,8 +123,9 @@ class TransactionController extends \yii\web\Controller
                 $orderedItem->save(false);
             }
         }
+
         $ids = collect($items)->pluck('id')->toArray();
-        $newItems = collect(OrderDetail::find()->where(['order_id' => $order->id, 'menu_id' => $ids])->all());
+        $newItems = collect(OrderDetail::find()->where(['order_id' => $orderId, 'menu_id' => $ids])->all());
 
         $this->actionPrintMenu($order->order_code, $newItems, Order::ORDER_ADDITIONAL);
         Yii::$app->response->statusCode = 200;
