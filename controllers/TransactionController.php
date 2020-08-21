@@ -127,6 +127,15 @@ class TransactionController extends \yii\web\Controller
         $ids = collect($items)->pluck('id')->toArray();
         $newItems = collect(OrderDetail::find()->where(['order_id' => $orderId, 'menu_id' => $ids])->all());
 
+        foreach ($items as $item) {
+            foreach ($newItems as $index => $newItem) {
+                if ($newItem->menu_id == $item['id']) {
+                    $newItem->qty = $item['qty'];
+                    $newItems->put($index, $newItem);
+                }
+            }
+        }
+
         $this->actionPrintMenu($order->order_code, $newItems, Order::ORDER_ADDITIONAL);
         Yii::$app->response->statusCode = 200;
         return $this->asJson(['message' => 'berhasil menambahkan pesanan']);
