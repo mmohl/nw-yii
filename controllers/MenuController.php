@@ -75,7 +75,7 @@ class MenuController extends Controller
             $tags = Collection::wrap($model->types);
             $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
             if ($model->imageFile) {
-                $model->img = "{$model->imageFile->baseName}.{$model->imageFile->extension}";
+                $model->img = "{$category}/{$model->imageFile->baseName}.{$model->imageFile->extension}";
                 $model->upload();
                 $model->imageFile = null;
             };
@@ -116,7 +116,7 @@ class MenuController extends Controller
             $tags = Collection::wrap($model->types);
             $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
             if ($model->imageFile) {
-                $model->img = "{$model->imageFile->baseName}.{$model->imageFile->extension}";
+                $model->img = "{$model->category}/{$model->imageFile->baseName}.{$model->imageFile->extension}";
                 $model->upload();
                 $model->imageFile = null;
             }
@@ -196,8 +196,8 @@ class MenuController extends Controller
         $total = Menu::find()->where(['category' => $category])->count();
 
         $items = collect($items)->map(function ($item) {
-            // if (is_null($item->img)) 
-            $item->img = 'app/default.jpg';
+            if (is_null($item->img))
+                $item->img = 'app/default.jpg';
             return $item;
         });
 
