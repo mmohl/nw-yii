@@ -76,7 +76,7 @@ class Category extends RootModel
             case Category::CATEGORY_BEVERAGE:
                 return 'minuman';
             case Category::CATEGORY_OTHER:
-                return 'cemilan';
+                return 'lain - lain';
             default:
                 return 'kategori salah';
         }

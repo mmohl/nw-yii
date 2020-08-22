@@ -71,7 +71,7 @@ AppAsset::register($this);
                                 <li><a href="<?= Url::to(['menu/index', 'category' => Category::CATEGORY_PACKAGE]) ?>">Paket</a></li>
                                 <li><a href="<?= Url::to(['menu/index', 'category' => Category::CATEGORY_FOOD]) ?>">Makanan</a></li>
                                 <li><a href="<?= Url::to(['menu/index', 'category' => Category::CATEGORY_BEVERAGE]) ?>">Minuman</a></li>
-                                <li><a href="<?= Url::to(['menu/index', 'category' => Category::CATEGORY_OTHER]) ?>">Cemilan</a></li>
+                                <li><a href="<?= Url::to(['menu/index', 'category' => Category::CATEGORY_OTHER]) ?>">Lain - Lain</a></li>
                             </ul>
                         </li>
                         <!-- <li>
