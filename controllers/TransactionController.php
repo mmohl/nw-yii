@@ -69,6 +69,7 @@ class TransactionController extends \yii\web\Controller
         $order->ordered_by = ucfirst($orderedBy);
         $order->order_code = Order::makeOrderCode();
         $order->table_number = $tableNumber;
+        $order->is_ignored = $payload['ignoreTax'] ? 1 : 0;
 
         if ($order->save()) {
             foreach ($items as $item) {
@@ -103,7 +104,7 @@ class TransactionController extends \yii\web\Controller
 
         $orderId = $payload['orderId'];
         $items = $payload['items'];
-        $order = Order::find()->select('order_code')->where(['id' => $orderId])->one();
+        $order = Order::find()->where(['id' => $orderId])->one();
 
         foreach ($items as $item) {
             $existingItem = OrderDetail::find()->where(['order_id' => $orderId, 'menu_id' => $item['id']])->one();
@@ -124,6 +125,8 @@ class TransactionController extends \yii\web\Controller
                 $orderedItem->save(false);
             }
         }
+
+        if ($payload['ignoreTax']) $order->is_ignored = $payload['ignoreTax'] ? 1 : 0;
 
         $ids = collect($items)->pluck('id')->toArray();
         $newItems = collect(OrderDetail::find()->where(['order_id' => $orderId, 'menu_id' => $ids])->all());
