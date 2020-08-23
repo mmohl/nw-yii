@@ -192,7 +192,7 @@ class MenuController extends Controller
         // (page - 1) * perPage
         $offset = ($page - 1) * $perPage;
 
-        $items = Menu::find()->where(['category' => $category])->offset($offset)->limit($perPage)->all();
+        $items = Menu::find()->where(['category' => $category])->offset($offset)->limit($perPage)->orderBy('name ASC')->all();
         $total = Menu::find()->where(['category' => $category])->count();
 
         $items = collect($items)->map(function ($item) {
