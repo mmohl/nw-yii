@@ -9,7 +9,7 @@ use yii\widgets\DetailView;
 
 $translate_category = ucfirst(Category::getTranslateCategoryName($model->category));
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Menu', 'url' => ['index', 'category' => $model->category]];
+$this->params['breadcrumbs'][] = ['label' => 'Menu ' . ucfirst(Category::getTranslateCategoryName($model->category)), 'url' => ['index', 'category' => $model->category]];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
