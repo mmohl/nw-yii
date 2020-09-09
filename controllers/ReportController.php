@@ -19,6 +19,8 @@ class ReportController extends \yii\web\Controller
 
     public function actionSales()
     {
+        $this->layout = 'concept/main';
+
         $searchModel = new OrderSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

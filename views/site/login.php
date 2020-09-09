@@ -12,49 +12,24 @@ $this->title = 'Halaman Masuk';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-
-<div class="limiter">
-    <div class="container-login100">
-        <div class="wrap-login100">
-            <div class="login100-pic js-tilt" data-tilt>
-                <img src="<?= Url::base() ?>/images/app/logo_resize.png" alt="IMG">
+<div class="splash-container">
+    <div class="card ">
+        <div class="card-header text-center">
+            <a href="<?= Url::base() ?>">
+                <img class="logo-img" src="<?= Url::base() ?>/images/app/logo_resize.png" alt="logo">
+            </a>
+        </div>
+        <div class="card-body">
+            <?= Html::beginForm(Url::to(['site/login']), 'post') ?>
+            <div class="form-group">
+                <!-- <input class="" id="username" type="text" placeholder="Username" autocomplete="off"> -->
+                <?= Html::activeInput('text', $model, 'username', ['class' => 'form-control form-control-lg', 'placeholder' => 'Nama Pengguna', 'autocomplete' => 'off']) ?>
             </div>
-
-            <!-- <form class="login100-form validate-form" id="login-form" method="POST"> -->
-            <?= Html::beginForm(Url::to(['site/login']), 'post', ['class' => 'login100-form validate-form', 'id' => 'login-form']) ?>
-            <span class="login100-form-title">
-                <h1><?= Html::encode($this->title) ?></h1>
-            </span>
-            <?php if (Yii::$app->session->hasFlash('failure')) : ?>
-                <p style="color: red; text-align: center;">
-                    <?= Yii::$app->session->getFlash('failure') ?>
-                </p>
-            <?php endif ?>
-
-            <div class="wrap-input100 validate-input" data-validate="Username diperlukan">
-                <!-- <input class="input100" type="text" name="email" placeholder="Email"> -->
-                <?= Html::activeInput('text', $model, 'username', ['class' => 'input100', 'placeholder' => 'Username']) ?>
-                <span class="focus-input100"></span>
-                <span class="symbol-input100">
-                    <i class="fa fa-envelope" aria-hidden="true"></i>
-                </span>
+            <div class="form-group">
+                <!-- <input class="" id="password" type="password" placeholder="Password"> -->
+                <?= Html::activeInput('password', $model, 'password', ['class' => 'form-control form-control-lg', 'placeholder' => 'Kata Sandi']) ?>
             </div>
-
-            <div class="wrap-input100 validate-input" data-validate="Password diperlukan">
-                <!-- <input class="input100" type="password" name="pass" placeholder="Password"> -->
-                <?= Html::activeInput('password', $model, 'password', ['class' => 'input100', 'placeholder' => 'Password']) ?>
-                <span class="focus-input100"></span>
-                <span class="symbol-input100">
-                    <i class="fa fa-lock" aria-hidden="true"></i>
-                </span>
-            </div>
-
-            <div class="container-login100-form-btn">
-                <button class="login100-form-btn">
-                    Login
-                </button>
-            </div>
-            <!-- </form> -->
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Masuk</button>
             <?= Html::endForm() ?>
         </div>
     </div>

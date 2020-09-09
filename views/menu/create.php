@@ -8,16 +8,19 @@ use yii\helpers\Html;
 
 $translate_category = ucfirst(Category::getTranslateCategoryName($category));
 $this->title = "Buat $translate_category";
-$this->params['breadcrumbs'][] = ['label' => 'Menu', 'url' => ['index', 'category' => $category]];
+$this->params['breadcrumbs'][] = ['label' => "Menu $translate_category", 'url' => ['index', 'category' => $category]];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="menu-create">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?= $this->render('_form', [
-        'model' => $model,
-        'category' => $category
-    ]) ?>
-
+<div class="row">
+    <div class="col-lg-8 offset-lg-2">
+        <div class="card">
+            <div class="card-body">
+                <?= $this->render('_form', [
+                    'model' => $model,
+                    'category' => $category
+                ]) ?>
+            </div>
+        </div>
+    </div>
 </div>

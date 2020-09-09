@@ -11,39 +11,35 @@ use kartik\select2\Select2;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="menu-form">
+<?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
-
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true, 'placeholder' => 'Masukan nama', 'value' => $model->isNewRecord ?  '' : $model->name]) ?>
+<?= $form->field($model, 'name')->textInput(['maxlength' => true, 'placeholder' => 'Masukan nama', 'value' => $model->isNewRecord ?  '' : $model->name]) ?>
 
 
-    <?= $form->field($model, 'price')->widget(MaskMoney::class, [
-        'value' => $model->isNewRecord ?  0 : $model->price,
-        'pluginOptions' => [
-            'prefix' => 'Rp ',
-            'precision' => 0
-        ],
-    ]) ?>
+<?= $form->field($model, 'price')->widget(MaskMoney::class, [
+    'value' => $model->isNewRecord ?  0 : $model->price,
+    'pluginOptions' => [
+        'prefix' => 'Rp ',
+        'precision' => 0
+    ],
+]) ?>
 
-    <?= $form->field($model, 'imageFile')->fileInput() ?>
+<?= $form->field($model, 'imageFile')->fileInput() ?>
 
-    <?= $form->field($model, 'types')->widget(Select2::class, [
-        'pluginOptions' => [
-            'tags' => true,
-            'tokenSeparators' => [','],
-            'maximumInputLength' => 10,
-            'multiple' => true
-        ]
-    ]) ?>
+<?= $form->field($model, 'types')->widget(Select2::class, [
+    'pluginOptions' => [
+        'tags' => true,
+        'tokenSeparators' => [','],
+        'maximumInputLength' => 10,
+        'multiple' => true
+    ]
+]) ?>
 
-    <?= $form->field($model, 'description')->textarea(['rows' => 4]) ?>
+<?= $form->field($model, 'description')->textarea(['rows' => 4]) ?>
 
-    <?= $form->field($model, 'category')->hiddenInput(['value' => $category])->label('') ?>
-    <div class="form-group">
-        <?= Html::submitButton('Simpan', ['class' => 'btn btn-success']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
-
+<?= $form->field($model, 'category')->hiddenInput(['value' => $category])->label('') ?>
+<div class="form-group">
+    <?= Html::submitButton('Simpan', ['class' => 'btn btn-success']) ?>
 </div>
+
+<?php ActiveForm::end(); ?>

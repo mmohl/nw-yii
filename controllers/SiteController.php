@@ -13,6 +13,8 @@ use yii\helpers\Url;
 
 class SiteController extends Controller
 {
+    // public $layout = 'concept/main';
+
     /**
      * {@inheritdoc}
      */
@@ -62,6 +64,8 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
+        $this->layout = 'concept/main';
+
         if (Yii::$app->user->isGuest) return $this->actionLogin();
 
         if (Yii::$app->user->identity->username == 'pelayan') {
@@ -75,7 +79,7 @@ class SiteController extends Controller
     {
         if (!Yii::$app->getUser()->isGuest) return $this->goHome();
 
-        $this->layout = 'login';
+        $this->layout = 'concept/login';
         $model = new Login();
         if ($model->load(Yii::$app->getRequest()->post()) && $model->login()) {
             Yii::$app->session->removeAllFlashes();

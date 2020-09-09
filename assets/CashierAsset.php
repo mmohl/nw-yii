@@ -22,11 +22,11 @@ class CashierAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'libraries/datatables/media/css/jquery.dataTables.min.css',
-        'libraries/datatables/media/css/dataTables.bootstrap.min.css',
+        'libraries/datatables/media/css/dataTables.bootstrap4.min.css',
     ];
     public $js = [
         'libraries/datatables/media/js/jquery.dataTables.min.js',
-        'libraries/datatables/media/js/dataTables.bootstrap.min.js',
+        'libraries/datatables/media/js/dataTables.bootstrap4.min.js',
         'libraries/lodash/dist/lodash.min.js',
         'scripts/cashier.js',
     ];

@@ -39,3 +39,4 @@ node_modules
 web/libraries/*
 web/images/*
 !web/images/app
+web/concept

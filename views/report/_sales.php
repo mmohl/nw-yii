@@ -9,6 +9,8 @@ use yii\web\View;
 
 $this->title = 'Laporan Penjualan';
 
+$this->params['breadcrumbs'] = 'Sales';
+
 $this->registerJsFile(
     '@web/js/report_print.js',
     ['depends' => [\yii\web\JqueryAsset::class]]
@@ -43,12 +45,12 @@ echo GridView::widget([
                 'title' => 'Pilih tahun',
                 'class' => 'form-control'
 
-            ]) . '&nbsp;' . Html::dropDownList('year-selector', date('Y'), ['Pilih Bulan'], [
+            ]) . '&nbsp;'  . Html::dropDownList('year-selector', date('Y'), ['Pilih Bulan'], [
                 'id' => 'month-selector',
                 'title' => 'Pilih bulan',
                 'class' => 'form-control',
                 'disabled' => true
-            ]) . '&nbsp;' .
+            ])  . '&nbsp;' .
                 Html::button('<i class="glyphicon glyphicon-print"></i> Cetak Laporan', [
                     'type' => 'button',
                     'title' => 'Cetak Laporan',

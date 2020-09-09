@@ -36,7 +36,8 @@
         "kartik-v/yii2-widget-select2": "^2.1",
         "nesbot/carbon": "^2.31",
         "kartik-v/yii2-widget-datepicker": "^1.4",
-        "dompdf/dompdf": "^0.8.5"
+        "dompdf/dompdf": "^0.8.5",
+        "yiisoft/yii2-bootstrap4": "^2.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
