@@ -1,29 +1,11 @@
+var chartItems;
+
 $(document).ready(() => {
     init()
 })
 
 function init() {
-    $.ajax({
-        url: '/transaction/dashboard',
-    }).then(res => {
-        const { totalSales, totalOmzet, chartItems } = res
-
-        let tableTotalSales = ''
-        let tableTotalOmzet = ''
-
-        Array.from(totalSales).forEach(({ label, value }) => {
-            tableTotalSales += (`<tr><td>${label}</td><td>${value}</td></tr>`)
-        })
-
-        Array.from(totalOmzet).forEach(({ label, value }) => {
-            tableTotalOmzet += (`<tr><td>${label}</td><td>${parseInt(value).toLocaleString('id')}</td></tr>`)
-        })
-
-        $('#total-sales').children('.panel-body').append(`<table class="table table-bordered">${tableTotalSales}</table>`)
-        $('#total-omset').children('.panel-body').append(`<table class="table table-bordered">${tableTotalOmzet}</table>`)
-        initChart(chartItems)
-    })
-
+    getDashboard();
 }
 
 
@@ -51,4 +33,84 @@ function initChart(payload) {
             }
         }
     });
+}
+
+
+function getDashboard() {
+  $.ajax({
+    url: "/site/dashboard",
+  }).then((res) => {
+    const {
+      salesInfo,
+      newCustomers,
+      customers,
+      totalOrders,
+      unpaidOrders,
+      sellItems,
+    } = res;
+
+    $("#data-sales").html(
+      `Rp ${(parseInt(salesInfo.value) / 1000).toLocaleString("id")}k`
+    );
+    $("#data-new-customers").html(newCustomers.value);
+    $("#data-customers").html(customers.value);
+    $("#data-orders").html(totalOrders.value);
+
+    $("#table-unpaid-orders tbody").empty();
+    unpaidOrders.forEach(({ order_code, ordered_by, table_number }, index) => {
+      $("#table-unpaid-orders tbody").append(
+        `<tr><td>${
+          index + 1
+        }</td><td>${order_code}</td><td>${ordered_by}</td><td>${table_number}</td></tr>`
+      );
+    });
+
+    let isSalesPositive = salesInfo.comparator > 0
+    $("#data-sales-percentage").append(
+      `<span class="icon-circle-small icon-box-xs text-${isSalesPositive ? 'success' : 'danger'} bg-${isSalesPositive ? 'success' : 'danger'}-light"><i class="fa fa-fw fa-arrow-${isSalesPositive ? 'up' : 'down'}"></i></span><span class="ml-1">${salesInfo.comparator}%</span>`
+    )
+    $("#data-sales-percentage").addClass(isSalesPositive ? 'text-success' : 'text-danger');
+    let isCustomersPositive = customers.comparator > 0
+    $("#data-customers-percentage").append(
+      `<span class="icon-circle-small icon-box-xs text-${isCustomersPositive ? 'success' : 'danger'} bg-${isCustomersPositive ? 'success' : 'danger'}-light"><i class="fa fa-fw fa-arrow-${isCustomersPositive ? 'up' : 'down'}"></i></span><span class="ml-1">${customers.comparator}%</span>`
+    )
+    $("#data-customers-percentage").addClass(isSalesPositive ? 'text-success' : 'text-danger');
+    let isOrdersPositive = totalOrders.comparator > 0
+    $("#data-orders-percentage").append(
+      `<span class="icon-circle-small icon-box-xs text-${isOrdersPositive ? 'success' : 'danger'} bg-${isOrdersPositive ? 'success' : 'danger'}-light"><i class="fa fa-fw fa-arrow-${isOrdersPositive ? 'up' : 'down'}"></i></span><span class="ml-1">${totalOrders.comparator}%</span>`
+    ).parent().addClass(isSalesPositive ? 'text-success' : 'text-danger');
+    $("#data-orders-percentage").addClass(isSalesPositive ? 'text-success' : 'text-danger');
+
+    let tmpSellItems = Object.entries(sellItems);
+    chartItems = c3.generate({
+      bindto: "#c3chart_category",
+      data: {
+        columns: tmpSellItems,
+        type: "donut",
+
+        //   onclick: function (d, i) {
+        //     console.log("onclick", d, i);
+        //   },
+        //   onmouseover: function (d, i) {
+        //     console.log("onmouseover", d, i);
+        //   },
+        //   onmouseout: function (d, i) {
+        //     console.log("onmouseout", d, i);
+        //   },
+
+        //   colors: {
+        //     Men: "#5969ff",
+        //     Women: "#ff407b",
+        //     Accessories: "#25d5f2",
+        //     Children: "#ffc750",
+        //     Apperal: "#2ec551",
+        //   },
+      },
+      // donut: {
+      //   label: {
+      //     show: false,
+      //   },
+      // },
+    });
+  });
 }
