@@ -94,7 +94,7 @@ function renderTotalItem(res, status, isIgnored = false) {
             <tr>
                 <td>${(item.name || "").toUpperCase()}</td>
                 <td>${item.qty || 0}</td>
-                <td>${parseInt(item.price || 0).toLocaleString("id")}</td>
+                <td>${parseInt(item.price * item.qty || 0).toLocaleString("id")}</td>
             </tr>
         `);
   });
