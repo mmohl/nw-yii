@@ -89,8 +89,8 @@ class TransactionController extends \yii\web\Controller
 
             $items = collect(OrderDetail::find()->where(['order_id' => $order->id])->all());
 
-            // $this->actionPrintMenu($order->order_code, $items);
-            // $this->actionPrint($order->order_code);
+            $this->actionPrintMenu($order->order_code, $items);
+            $this->actionPrint($order->order_code);
 
             return $this->asJson(['message' => 'berhasil membuat pesanan']);
         }
@@ -142,8 +142,8 @@ class TransactionController extends \yii\web\Controller
             }
         }
 
-        // $this->actionPrintMenu($order->order_code, $newItems, Order::ORDER_ADDITIONAL);
-        // $this->actionPrint($order->order_code);
+        $this->actionPrintMenu($order->order_code, $newItems, Order::ORDER_ADDITIONAL);
+        $this->actionPrint($order->order_code);
         Yii::$app->response->statusCode = 200;
         return $this->asJson(['message' => 'berhasil menambahkan pesanan']);
     }
