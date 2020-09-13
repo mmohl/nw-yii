@@ -318,7 +318,7 @@ class TransactionController extends \yii\web\Controller
 
             /* Items */
             foreach ($order->items as $item) {
-                $price = number_format($item->price, 0, ',', '.');
+                $price = number_format($item->price * $item->qty, 0, ',', '.');
                 $name = strlen($item->name) > 15 ? substr(strtoupper($item->name), 0, 15) . '...' : $item->name;
                 $printer->text("{$item->qty}    {$name}" . str_pad($price, 32 - strlen("{$item->qty}    {$name}"), ' ', STR_PAD_LEFT));
             }
