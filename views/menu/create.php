@@ -12,15 +12,15 @@ $this->params['breadcrumbs'][] = ['label' => "Menu $translate_category", 'url' =
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<div class="row">
+<?= $this->render('_form', [
+    'model' => $model,
+    'category' => $category
+]) ?>
+<!-- <div class="row">
     <div class="col-lg-8 offset-lg-2">
         <div class="card">
             <div class="card-body">
-                <?= $this->render('_form', [
-                    'model' => $model,
-                    'category' => $category
-                ]) ?>
             </div>
         </div>
     </div>
-</div>
+</div> -->
