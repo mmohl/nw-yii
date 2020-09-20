@@ -99,10 +99,9 @@ ConceptAsset::register($this);
                                     <i class="fa fa-fw fa-user-circle"></i>Dashboard
                                 </a>
                             </li>
-
                             <li class="nav-item">
                                 <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-3" aria-controls="submenu-3"><i class="fas fa-fw fa-chart-pie"></i>Menu</a>
-                                <div id="submenu-3" class="collapse submenu" style="">
+                                <div id="submenu-3" class="collapse submenu">
                                     <ul class="nav flex-column">
                                         <li class="nav-item"><a class="nav-link" href="<?= Url::to(['menu/index', 'category' => Category::CATEGORY_PACKAGE]) ?>">Paket</a></li>
                                         <li class="nav-item"><a class="nav-link" href="<?= Url::to(['menu/index', 'category' => Category::CATEGORY_FOOD]) ?>">Makanan</a></li>
@@ -112,7 +111,13 @@ ConceptAsset::register($this);
                                 </div>
                             </li>
                             <li class="nav-item ">
-                                <a class="nav-link" href="<?= Url::to(['report/sales']) ?>" aria-controls="submenu-4"><i class="fab fa-fw fa-wpforms"></i>Laporan</a>
+                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-4" aria-controls="submenu-3"><i class="fab fa-fw fa-wpforms"></i>Laporan</a>
+                                <div id="submenu-4" class="collapse submenu">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item"><a class="nav-link" href="<?= Url::to(['report/sales']) ?>">Penjualan</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="<?= Url::to(['report/chart']) ?>">Grafik</a></li>
+                                    </ul>
+                                </div>
                             </li>
                             <li class="nav-divider">
                                 Fitur

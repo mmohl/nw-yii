@@ -19,11 +19,14 @@ use yii\db\Query;
  * @property int $total_payment
  * @property int $rounding
  * @property string $is_ignored
+ * @property string $month
+ * @property string $year
  */
 class Order extends RootModel
 {
     private $total;
     public $year;
+    public $month;
 
     const TOTAL_SALES_TAG_DAY = 'day';
     const TOTAL_SALES_TAG_WEEK = 'week';
@@ -62,7 +65,7 @@ class Order extends RootModel
             [['date', 'ordered_by'], 'required'],
             [['id', 'total_payment', 'is_paid', 'rounding', 'is_ignored'], 'integer'],
             // [['is_ignored'], 'string'],
-            [['date', 'created_at', 'updated_at', 'order_code', 'total', 'year'], 'safe'],
+            [['date', 'created_at', 'updated_at', 'order_code', 'total', 'year', 'month'], 'safe'],
             [['ordered_by'], 'string', 'max' => 255],
         ];
     }
@@ -85,7 +88,9 @@ class Order extends RootModel
             'tax' => 'Pajak',
             'beforeRounding' => 'Sebelum Rounding',
             'changes' => 'Kembali',
-            'is_ignored' => 'Abaikan'
+            'is_ignored' => 'Abaikan',
+            'month' => 'Bulan',
+            'year' => 'Tahun'
         ];
     }
 
