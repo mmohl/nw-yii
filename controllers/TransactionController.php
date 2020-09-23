@@ -344,6 +344,8 @@ class TransactionController extends \yii\web\Controller
             // $printer->text('Before Rounding' . str_pad(number_format($total, 0, ',', '.'), 32 - strlen('Before Rounding'), ' ', STR_PAD_LEFT) . "\n");
             // $printer->text('Rounding' . str_pad($rounded > 0 ? "+" . number_format($rounded, 0, ',', '.') : number_format($rounded, 0, ',', '.'), 32 - strlen('Rounding'), ' ', STR_PAD_LEFT) . "\n");
             $printer->text('Total' . str_pad(number_format($total + $rounded, 0, ',', '.'), 32 - strlen('Total'), ' ', STR_PAD_LEFT) . "\n");
+            $printer->text('Bayar' . str_pad(number_format($order->total_payment, 0, ',', '.'), 32 - strlen('Bayar'), ' ', STR_PAD_LEFT) . "\n");
+            $printer->text('Kembali' . str_pad(number_format($order->total_payment - ($total + $rounded), 0, ',', '.'), 32 - strlen('Kembali'), ' ', STR_PAD_LEFT) . "\n");
 
             /* Footer */
             $printer->text("================================\n");
