@@ -1,7 +1,21 @@
 version: '2'
 services:
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+  phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      ports:
+          - '8888:80'
+      environment:
+        PMA_HOST: mysql
+      depends_on:
+          - mysql
   php:
-    image: yiisoftware/yii2-php:7.1-apache
+    image: yiisoftware/yii2-php:7.2-apache
     volumes:
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
       - ./:/app:delegated
